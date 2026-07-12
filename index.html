@@ -2000,7 +2000,13 @@
     lang:navigator.language||null,
     tz:(window.Intl&&Intl.DateTimeFormat)?Intl.DateTimeFormat().resolvedOptions().timeZone:null,
     utm_source:utm.source||null, utm_medium:utm.medium||null, utm_campaign:utm.campaign||null }; }
+  // Skip automated traffic (crawlers, link-preview fetchers, headless/automation browsers)
+  // so the public visit count reflects real people, not bots.
+  var isBot = (function(){ try{ var ua=navigator.userAgent||'';
+    return navigator.webdriver===true || /bot|crawl|spider|slurp|headless|lighthouse|pingdom|monitor|facebookexternalhit|embedly|preview|screenshot/i.test(ua);
+  }catch(e){ return false; } })();
   function track(event, props){
+    if(isBot) return;
     // Visit counting (pageview) runs for everyone; anything that carries the scenario
     // a person entered (props) is only logged with consent.
     var consented = getConsent()==='granted';
