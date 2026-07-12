@@ -25,9 +25,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    if (req.query && req.query.purge_test) {
-      const del = await sql`delete from events where sid like 'test-%' returning id`;
-      res.status(200).json({ purged_test_rows: del.length });
+    // Owner-only maintenance (token already checked above):
+    //   ?purge=test  -> delete verification rows (sid like 'test-%' or 'browser-%')
+    //   ?purge=all   -> wipe every event (fresh start)
+    const purge = req.query && req.query.purge;
+    if (purge === 'test') {
+      const del = await sql`delete from events where sid like 'test-%' or sid like 'browser-%' returning id`;
+      res.status(200).json({ purged_rows: del.length });
+      return;
+    }
+    if (purge === 'all') {
+      const del = await sql`delete from events returning id`;
+      res.status(200).json({ purged_rows: del.length });
       return;
     }
 
