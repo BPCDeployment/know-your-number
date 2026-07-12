@@ -785,7 +785,7 @@
         <thead><tr><th>Cancer type</th><th>Smoking ceiling</th><th>Alcohol ceiling (6 drinks/day)</th><th>Notes</th></tr></thead>
         <tbody id="cancerSourceTable"></tbody>
       </table>
-      <p class="src">"Smoking ceiling" is the relative risk approached at high cumulative pack-years for combustible cigarettes. For larynx, pharynx, oral cavity, and esophagus, the ceiling is scaled up from Gandini et al.'s pooled "current smoker" average by ~2.8×, the ratio separating lung cancer's population-average smoker risk from its long-term-heavy-smoker risk. That's what allows the multiplicative combination to match the JKMS heavy+heavy figures above.</p>
+      <p class="src">"Smoking ceiling" is the relative risk approached at high cumulative pack-years, taken directly from cited primary sources: the INHANCE pooled dose-response (Wyss, <em>Am J Epidemiol</em> 2013) for larynx, pharynx and oral cavity, Wang (<em>JNCI</em> 2017) for oesophageal squamous cell, and dedicated meta-analyses for the rest (see each row's source). Alcohol dose-response is re-fit to Bagnardi (<em>Br J Cancer</em> 2015). For the shared upper-aerodigestive cancers, smoking and alcohol are combined multiplicatively <em>and</em> multiplied by a synergy factor of 2.0, reflecting the greater-than-multiplicative joint effect measured by the INHANCE consortium (ψ≈2.15); this reproduces the ~35× heavy-smoking-plus-heavy-drinking risk reported by INHANCE and the JKMS 2024 meta-analysis, using cited individual risks rather than an inflated ceiling.</p>
 
       <h5>Product multipliers</h5>
       <table class="datatable">
@@ -826,36 +826,42 @@
 
 <script>
 (function(){
+  // Smoking "ceiling" = cited high-exposure (long-term heavy) relative risk asymptote.
+  // Alcohol {a,b,thr} = power-law RR = 1 + a·(drinks/day)^b, active only above threshold thr
+  // drinks/day, re-fit to Bagnardi et al. Br J Cancer 2015 dose bands. syn:true marks the
+  // upper-aerodigestive cancers where smoking×alcohol is greater-than-multiplicative (INHANCE).
+  // ev = evidence confidence for this row (strong / moderate / weak).
   const cancerTypes = [
-    {key:'lung', label:'Lung', smoking:25, alcohol:null,
-      smokeSrc:'CDC / U.S. Surgeon General 2014, long-term heavy smoker figure', alcSrc:'No established link'},
-    {key:'larynx', label:'Larynx (voice box)', smoking:19.5, alcohol:{a:0.05625,b:2.415},
-      smokeSrc:'Gandini 2008 (6.98×) scaled ~2.8×; validated vs. JKMS 2024 (38.75× combined)', alcSrc:'NCI fact sheet: 0.9× light, 2.6× heavy drinkers'},
-    {key:'pharynx', label:'Pharynx (throat)', smoking:18.9, alcohol:{a:0.1,b:2.661},
-      smokeSrc:'Gandini 2008 (6.76×) scaled ~2.8×, by analogy with larynx/oral', alcSrc:'Modeled same as oral cavity (no separate pooled figure)'},
-    {key:'oral', label:'Oral cavity (mouth)', smoking:9.6, alcohol:{a:0.1,b:2.661},
-      smokeSrc:'Gandini 2008 (3.43×) scaled ~2.8×; validated vs. JKMS 2024 (36.42× combined)', alcSrc:'NCI fact sheet: 1.1× light, 5× heavy drinkers'},
-    {key:'esophagus', label:'Esophagus', smoking:10.0, alcohol:{a:0.3,b:1.868},
-      smokeSrc:'Gandini 2008 upper-digestive-tract figure (3.57×) scaled ~2.8×, by analogy', alcSrc:'NCI fact sheet: 1.3× light, 5× heavy drinkers'},
-    {key:'bladder', label:'Bladder', smoking:3.5, alcohol:null,
-      smokeSrc:'Cumberbatch et al. 2016, current smokers', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
-    {key:'liver', label:'Liver', smoking:1.9, alcohol:{a:0.05,b:2.161},
-      smokeSrc:'Lee et al. 2009, heavy smokers (already heavy-smoker-specific)', alcSrc:'NCI fact sheet: 2× as likely in heavy drinkers'},
-    {key:'pancreas', label:'Pancreas', smoking:1.74, alcohol:null,
-      smokeSrc:'Iodice / Gandini 2008, current smokers', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
-    {key:'stomach', label:'Stomach', smoking:1.53, alcohol:null,
-      smokeSrc:'Gastric Cancer journal meta-analysis, 2023', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
-    {key:'cervical', label:'Cervical (women)', smoking:1.83, alcohol:null,
-      smokeSrc:'Gandini et al. 2008, current smokers', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
-    {key:'colorectal', label:'Colorectal', smoking:1.3, alcohol:{a:0.05,b:1.661},
-      smokeSrc:'Pooled cohort meta-analyses, current smokers', alcSrc:'NCI fact sheet: 1.2–1.5× in moderate-heavy drinkers'},
-    {key:'kidney', label:'Kidney (renal)', smoking:1.4, alcohol:null,
-      smokeSrc:'Cumberbatch et al. 2016, current smokers', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
-    {key:'aml', label:'Acute myeloid leukemia', smoking:1.4, alcohol:null,
-      smokeSrc:'Meta-analysis of 23 studies, Am J Hematol 2014', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
-    {key:'breast', label:'Breast (women)', smoking:null, alcohol:{a:0.04,b:1.953},
-      smokeSrc:'Not among the classic 12–13 smoking-caused cancer sites', alcSrc:'NCI fact sheet: 1.04× light, 1.6× heavy drinkers'}
+    {key:'lung', label:'Lung', smoking:20, alcohol:null, ev:'strong',
+      smokeSrc:'Gandini 2008 (current 8.96×), Int J Cancer; heavy long-term far higher (Pesch 2012)', alcSrc:'No established link'},
+    {key:'larynx', label:'Larynx (voice box)', smoking:11, alcohol:{a:0.0796,b:1.907,thr:1.5}, syn:true, ev:'strong',
+      smokeSrc:'INHANCE/Wyss 2013, Am J Epidemiol (subsite OR ~8, rising to ~11 at high exposure)', alcSrc:'Bagnardi 2015: n.s. light, 1.44× moderate, 2.65× heavy'},
+    {key:'pharynx', label:'Pharynx (throat)', smoking:8, alcohol:{a:0.0916,b:2.315,thr:0}, syn:true, ev:'strong',
+      smokeSrc:'INHANCE/Wyss 2013; Gandini 2008 (6.76×)', alcSrc:'Bagnardi 2015 (oral+pharynx): 1.13× light → 5.13× heavy'},
+    {key:'oral', label:'Oral cavity (mouth)', smoking:5.5, alcohol:{a:0.0916,b:2.315,thr:0}, syn:true, ev:'strong',
+      smokeSrc:'Gandini 2008 (3.43×), Int J Cancer; INHANCE/Wyss 2013 dose-response', alcSrc:'Bagnardi 2015 (oral+pharynx): 1.13× light → 5.13× heavy'},
+    {key:'esophagus', label:'Esophagus (squamous)', smoking:6, alcohol:{a:0.2715,b:1.683,thr:0}, syn:true, ev:'strong',
+      smokeSrc:'Wang 2017, JNCI (SCC 4.18×, ~5.6× at 60+ pack-years)', alcSrc:'Bagnardi 2015: 1.26× light → 4.95× heavy'},
+    {key:'bladder', label:'Bladder', smoking:4.5, alcohol:null, ev:'strong',
+      smokeSrc:'Freedman 2011, JAMA (current smokers ~4×)', alcSrc:'Not an established alcohol-related site'},
+    {key:'liver', label:'Liver', smoking:2.2, alcohol:{a:0.0957,b:1.5,thr:3}, ev:'moderate',
+      smokeSrc:'Petrick 2018, Br J Cancer (LCPP, HR 1.86; adjusts for HBV/HCV/alcohol)', alcSrc:'Bagnardi 2015: heavy drinkers only, 2.07×'},
+    {key:'pancreas', label:'Pancreas', smoking:3.0, alcohol:null, ev:'strong',
+      smokeSrc:'Bosetti 2012, Ann Oncol (PanC4 consortium, 2.2×; 3.4× at ≥35/day)', alcSrc:'Not an established alcohol-related site'},
+    {key:'stomach', label:'Stomach', smoking:1.7, alcohol:{a:0.0188,b:1.5,thr:3}, ev:'moderate',
+      smokeSrc:'Ladeiras-Lopes 2008, Cancer Causes Control (1.62× men)', alcSrc:'Bagnardi 2015: heavy drinkers only, 1.21×'},
+    {key:'cervical', label:'Cervical (women)', smoking:2.3, alcohol:null, ev:'moderate',
+      smokeSrc:'Plummer 2003, IARC pooled (2.30×) — a cofactor conditional on HPV, not independent', alcSrc:'Not an established alcohol-related site'},
+    {key:'colorectal', label:'Colorectal', smoking:1.3, alcohol:{a:0.0477,b:1.372,thr:1.5}, ev:'weak',
+      smokeSrc:'Botteri 2008, JAMA (ever 1.18×) — weak; emerges only after ~30 years', alcSrc:'Bagnardi 2015: n.s. light, 1.17× moderate, 1.44× heavy'},
+    {key:'kidney', label:'Kidney (renal)', smoking:1.7, alcohol:null, ev:'moderate',
+      smokeSrc:'Hunt 2005, Int J Cancer (~1.38× ever; 1.72× at 30/day)', alcSrc:'Not an established alcohol-related site'},
+    {key:'aml', label:'Acute myeloid leukemia', smoking:1.45, alcohol:null, ev:'moderate',
+      smokeSrc:'Fircanis 2014, Am J Hematol (1.40×)', alcSrc:'Not an established alcohol-related site'},
+    {key:'breast', label:'Breast (women)', smoking:null, alcohol:{a:0.0628,b:1.406,thr:0}, ev:'moderate',
+      smokeSrc:'Not among the established smoking-caused sites', alcSrc:'Bagnardi 2015: 1.04× light, 1.23× moderate, 1.61× heavy'}
   ];
+  const SYNERGY = 2.0; // INHANCE ψ≈2.15: smoking×alcohol is greater-than-multiplicative for shared UADT cancers
   const cvdTypes = [ {key:'heart', label:'Heart disease'}, {key:'stroke', label:'Stroke'} ];
 
   const productData = {
@@ -929,12 +935,14 @@
     return 1 + (ceiling-1) * (1 - Math.exp(-packYears/25));
   }
   function alcoholCancerRR(params, dose){
-    if(!params || dose<=0) return 1;
+    if(!params || dose<=(params.thr||0)) return 1;
     const d = Math.min(dose, 6);
     return 1 + params.a * Math.pow(d, params.b);
   }
-  function chdRR(dose){ if(dose<=0) return 1; return 1 + 2.11 * Math.pow(dose/20, 0.261); }
-  function strokeRR(dose){ if(dose<=0) return 1; return 1 + 0.99 * Math.pow(dose/20, 0.319); }
+  // Cigarette CVD recalibrated to sex-averaged Hackshaw 2018 (BMJ): CHD ~2.44× and stroke ~1.90×
+  // at 20/day, preserving the steep low-dose shape (1/day ≈ 40% of the 20/day excess).
+  function chdRR(dose){ if(dose<=0) return 1; return 1 + 1.44 * Math.pow(dose/20, 0.336); }
+  function strokeRR(dose){ if(dose<=0) return 1; return 1 + 0.90 * Math.pow(dose/20, 0.389); }
   // Every-day vaping heart-disease excess is anchored at 0.5 (RR ~1.5), centered on the
   // pooled meta-analytic e-cig CVD estimates (composite OR ~1.31; MI OR ~1.24-1.53 adjusted),
   // not the older single cross-sectional PATH OR of 2.25 (kept only as an upper reference).
@@ -950,7 +958,7 @@
   }
 
   function allConditions(){
-    return cancerTypes.map(c=>({key:c.key,label:c.label,kind:'cancer',smoking:c.smoking,alcohol:c.alcohol}))
+    return cancerTypes.map(c=>({key:c.key,label:c.label,kind:'cancer',smoking:c.smoking,alcohol:c.alcohol,syn:c.syn,ev:c.ev}))
       .concat(cvdTypes.map(c=>({key:c.key,label:c.label,kind:c.key})));
   }
   function visibleConditions(){
@@ -978,7 +986,11 @@
   }
   function combinedRR(cond, cigs, months, drinks, alcMonths, years, product){
     if(cond.kind==='heart' || cond.kind==='stroke') return cvdComponent(cond, cigs, months, product);
-    return smokingComponent(cond, cigs, months, years, product) * alcoholComponent(cond, drinks, alcMonths);
+    const s = smokingComponent(cond, cigs, months, years, product);
+    const a = alcoholComponent(cond, drinks, alcMonths);
+    let rr = s * a;
+    if(cond.syn && s>1 && a>1) rr *= SYNERGY; // greater-than-multiplicative synergy, shared UADT cancers
+    return rr;
   }
   function fmt(x){ return x.toFixed(1) + '×'; }
   function colorFor(cond){
@@ -1000,10 +1012,14 @@
     else { els.focusCondition.value = 'lung'; }
   }
   function populateSourceTable(){
+    const evColor = {strong:'#1FBF8F', moderate:'#E0A32A', weak:'#E8465A'};
     els.cancerSourceTable.innerHTML = cancerTypes.map(c=>{
       const smokeStr = c.smoking ? c.smoking.toFixed(2)+'×' : 'N/A';
       const alcStr = c.alcohol ? alcoholCancerRR(c.alcohol,6).toFixed(2)+'×' : 'N/A';
-      return `<tr><td>${c.label}</td><td class="num">${smokeStr}</td><td class="num">${alcStr}</td><td>${c.alcohol ? c.alcSrc : c.smokeSrc}</td></tr>`;
+      const col = evColor[c.ev] || 'var(--faint)';
+      const badge = c.ev ? ` <span style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:${col};border:1px solid ${col};border-radius:4px;padding:0 4px;white-space:nowrap;">${c.ev}</span>` : '';
+      const src = c.alcohol ? (c.smoking ? c.smokeSrc + ' · ' + c.alcSrc : c.alcSrc) : c.smokeSrc;
+      return `<tr><td>${c.label}${badge}</td><td class="num">${smokeStr}</td><td class="num">${alcStr}</td><td>${src}</td></tr>`;
     }).join('');
   }
 
@@ -1142,7 +1158,7 @@
     }
     els.synergySub.textContent = 'How your combined risk compares to simply adding the two separate risks together.';
     const additive = 1 + (smoke-1) + (alc-1);
-    const actual = smoke * alc;
+    const actual = smoke * alc * (cond.syn ? SYNERGY : 1);
     const bonus = actual - additive;
     const projectionNote = isVape
       ? `<div class="synergy-note projection"><strong>Projected, not validated:</strong> no study has measured vaping + alcohol combined cancer risk directly. This extends the same mechanism validated for cigarettes + alcohol. Treat this as a reasoned projection.</div>`
@@ -1299,7 +1315,7 @@
         const s = smokingComponent(c, cigs, months, years, product);
         const a = alcoholComponent(c, drinks, alcMonths);
         const additive = 1 + (s-1) + (a-1);
-        const actual = s * a;
+        const actual = s * a * (c.syn ? SYNERGY : 1);
         if(additive > 1){ bestRatio = Math.max(bestRatio, actual/additive); }
       }
     });
