@@ -1158,7 +1158,7 @@
     }
     els.synergySub.textContent = 'How your combined risk compares to simply adding the two separate risks together.';
     const additive = 1 + (smoke-1) + (alc-1);
-    const actual = smoke * alc * (cond.syn ? SYNERGY : 1);
+    const actual = smoke * alc * ((cond.syn && smoke>1 && alc>1) ? SYNERGY : 1);
     const bonus = actual - additive;
     const projectionNote = isVape
       ? `<div class="synergy-note projection"><strong>Projected, not validated:</strong> no study has measured vaping + alcohol combined cancer risk directly. This extends the same mechanism validated for cigarettes + alcohol. Treat this as a reasoned projection.</div>`
@@ -1315,7 +1315,7 @@
         const s = smokingComponent(c, cigs, months, years, product);
         const a = alcoholComponent(c, drinks, alcMonths);
         const additive = 1 + (s-1) + (a-1);
-        const actual = s * a * (c.syn ? SYNERGY : 1);
+        const actual = s * a * ((c.syn && s>1 && a>1) ? SYNERGY : 1);
         if(additive > 1){ bestRatio = Math.max(bestRatio, actual/additive); }
       }
     });
