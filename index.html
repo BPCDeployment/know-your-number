@@ -226,6 +226,256 @@
 
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
 </style>
+
+<!-- ============ FACELIFT: bold vibrant overhaul (overrides above) ============ -->
+<style id="facelift">
+  :root{
+    --tier-green:#1FBF8F; --tier-teal:#2FA8A0; --tier-amber:#E0A32A; --tier-orange:#F07B3A; --tier-red:#E8465A;
+    --grad-a:#2BD4A8; --grad-b:#3E8FB0; --grad-c:#7B6CF0;
+    --glow:0 10px 40px -12px rgba(43,212,168,.35);
+    --card-shadow:0 6px 24px -14px rgba(18,24,29,.4);
+    --radius:18px; --radius-sm:12px;
+  }
+  html[data-theme="dark"]{
+    --bg:#0A0F13; --surface:#131C22; --border:#26343D; --ink:#F1F7F8; --muted:#9DB0B8; --faint:#5F7480;
+    --tier-green:#2BE3AC; --tier-teal:#3FD0C6; --tier-amber:#F5C044; --tier-orange:#FF9147; --tier-red:#FF6070;
+    --grad-a:#2BE3AC; --grad-b:#54B0E0; --grad-c:#9A8CFF;
+    --lung-line:#5FE0C4; --accent:#2BE3AC;
+    --glow:0 12px 50px -12px rgba(43,227,172,.4);
+    --card-shadow:0 10px 40px -18px rgba(0,0,0,.7);
+  }
+
+  html[data-theme="dark"] body{
+    background:
+      radial-gradient(1000px 600px at 15% -8%, rgba(43,227,172,.10), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(122,108,240,.12), transparent 55%),
+      var(--bg);
+    background-attachment:fixed;
+  }
+  body{
+    background:
+      radial-gradient(900px 500px at 12% -10%, rgba(43,212,168,.10), transparent 60%),
+      radial-gradient(800px 460px at 100% -5%, rgba(122,108,240,.08), transparent 55%),
+      var(--bg);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:1240px;}
+
+  /* Sitebar / brand */
+  .sitebar{border-bottom:none;margin-bottom:14px;}
+  .brand{font-size:15px;gap:9px;}
+  .brand .mark{width:12px;height:12px;box-shadow:0 0 0 4px rgba(43,212,168,.16);animation:pulseDot 2.6s ease-in-out infinite;}
+  .themebtn{border-radius:12px;transition:transform .15s, border-color .2s;}
+  .themebtn:hover{transform:translateY(-1px);border-color:var(--accent);}
+
+  /* Header */
+  header.top{margin-bottom:16px;}
+  .eyebrow{color:var(--muted);}
+  .eyebrow b{color:var(--accent);}
+  h1{
+    font-size:clamp(40px,11vw,76px);line-height:.96;margin-bottom:12px;
+    background:linear-gradient(105deg,var(--ink) 30%,var(--grad-a) 70%,var(--grad-c));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .subtitle{font-size:17px;max-width:56ch;}
+
+  /* Callout as a hook chip */
+  .callout{
+    background:linear-gradient(135deg,rgba(43,212,168,.10),rgba(122,108,240,.08));
+    border:1px solid var(--border);border-radius:var(--radius);font-size:14px;
+  }
+  .callout strong{color:var(--accent);}
+
+  /* Presets */
+  .presets{gap:9px;margin-bottom:22px;}
+  .preset-chip{
+    border-radius:999px;border:1.5px solid var(--border);background:var(--surface);
+    transition:transform .12s, border-color .18s, background .18s, box-shadow .18s;
+  }
+  .preset-chip:hover{transform:translateY(-2px);border-color:var(--accent);}
+  .preset-chip.active{
+    border-color:transparent;color:var(--accent-ink);
+    background:linear-gradient(120deg,var(--grad-a),var(--grad-b));
+    box-shadow:var(--glow);
+  }
+
+  /* Panels: glassy */
+  .panel, .share-panel, .synergy-panel, .money-card, details.method{
+    border-radius:var(--radius);box-shadow:var(--card-shadow);
+    background:var(--surface);
+  }
+  html[data-theme="dark"] .panel,
+  html[data-theme="dark"] .share-panel,
+  html[data-theme="dark"] .barchart-panel,
+  html[data-theme="dark"] .chart-panel{
+    background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0)) , var(--surface);
+    border-color:var(--border);
+  }
+  .grid{gap:18px;}
+  @media (min-width:900px){ .grid{grid-template-columns:320px 1fr;} }
+
+  /* Controls polish */
+  .controls .subhead{color:var(--accent);letter-spacing:.1em;}
+  input[type=range]{height:8px;}
+  input[type=range]::-webkit-slider-thumb{width:28px;height:28px;box-shadow:0 2px 10px rgba(0,0,0,.3),0 0 0 1.5px var(--lung);}
+  .controls label span.val{
+    font-size:15px;padding:2px 9px;border-radius:8px;background:var(--lung-soft);color:var(--lung-line);
+  }
+  .controls.alcgroup label span.val, .field .val.alc{background:var(--wine-soft);color:var(--wine);}
+
+  /* Results ordering: engagement up, ads sunk */
+  .results{gap:18px;}
+  .results > *{order:5;}
+  .results .toolbar{order:0;}
+  .results .score-hero{order:1;}
+  .results .stat-tiles{order:2;}
+  .results .hero-card{order:3;}
+  .results .share-panel{order:4;}
+  .results .synergy-panel{order:6;}
+  .results .barchart-panel{order:7;}
+  .results .chart-panel{order:8;}
+  .results .ad-slot--leaderboard{order:30;opacity:.9;}
+  #shareCanvas{order:99;}
+
+  /* View toggle + focus */
+  .view-toggle{border-radius:12px;padding:4px;}
+  .view-toggle button.active{background:linear-gradient(120deg,var(--grad-a),var(--grad-b));color:var(--accent-ink);box-shadow:0 4px 14px -6px rgba(43,212,168,.6);}
+  .focus-select select{border-radius:10px;}
+
+  /* ===== SCORE HERO ===== */
+  .score-hero{
+    position:relative;overflow:hidden;border:1px solid var(--border);border-radius:var(--radius);
+    padding:24px;display:flex;gap:26px;align-items:center;flex-wrap:wrap;
+    background:
+      radial-gradient(420px 220px at 20% 0%, var(--tier-glow, rgba(43,212,168,.16)), transparent 70%),
+      var(--surface);
+    box-shadow:var(--card-shadow);transition:background .4s;
+  }
+  .gauge-wrap{position:relative;width:230px;max-width:64vw;flex:0 0 auto;}
+  #scoreGauge{width:100%;height:auto;display:block;overflow:visible;}
+  .gauge-center{position:absolute;left:0;right:0;bottom:6px;text-align:center;}
+  .score-num{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(52px,13vw,72px);line-height:1;
+    color:var(--tier-c,var(--accent));letter-spacing:-.02em;
+    text-shadow:0 0 30px var(--tier-glow, rgba(43,212,168,.4));
+  }
+  .score-max{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--faint);margin-top:2px;letter-spacing:.05em;}
+  .score-meta{flex:1;min-width:220px;}
+  .score-kicker{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--faint);margin-bottom:8px;}
+  .score-tier{
+    display:inline-block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(22px,5vw,30px);
+    color:var(--tier-c,var(--accent));letter-spacing:-.01em;line-height:1.05;margin-bottom:8px;
+  }
+  .score-blurb{font-size:14.5px;color:var(--muted);max-width:42ch;margin-bottom:12px;}
+  .score-mult{font-size:13px;color:var(--faint);}
+  .score-mult b{font-family:'JetBrains Mono',monospace;color:var(--ink);font-weight:700;}
+
+  /* ===== STAT TILES ===== */
+  .stat-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+  @media (min-width:620px){ .stat-tiles{grid-template-columns:repeat(4,1fr);} }
+  .tile{
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;
+    box-shadow:var(--card-shadow);transition:transform .16s, border-color .2s;position:relative;overflow:hidden;
+  }
+  .tile::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(var(--grad-a),var(--grad-b));opacity:.8;}
+  .tile:hover{transform:translateY(-3px);border-color:var(--accent);}
+  .tile-k{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:8px;}
+  .tile-v{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--ink);line-height:1;letter-spacing:-.01em;}
+  .tile-s{font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.35;}
+
+  /* Hero-card (per-condition detail) restyle */
+  .hero-card{
+    background:linear-gradient(155deg,var(--lung-soft),var(--surface) 62%);
+    border:1px solid var(--border);box-shadow:var(--card-shadow);
+  }
+  .hero-card .big{font-size:clamp(38px,9vw,50px);}
+  .compare .ccard .v{font-size:20px;}
+
+  /* Buttons */
+  .btn{border-radius:999px;transition:transform .14s, box-shadow .2s, filter .2s;}
+  .btn-primary{background:linear-gradient(120deg,var(--grad-a),var(--grad-b));color:var(--accent-ink);box-shadow:0 8px 24px -10px rgba(43,212,168,.7);}
+  .btn-primary:hover{transform:translateY(-2px);filter:brightness(1.05);box-shadow:0 12px 30px -10px rgba(43,212,168,.85);}
+  .btn-secondary{background:var(--surface);border:1.5px solid var(--border);}
+  .btn-secondary:hover{transform:translateY(-2px);border-color:var(--accent);}
+  .btn-challenge{background:linear-gradient(120deg,var(--grad-c),var(--grad-b));color:#fff;box-shadow:0 8px 24px -10px rgba(122,108,240,.7);}
+  .btn-challenge:hover{transform:translateY(-2px);filter:brightness(1.06);}
+
+  /* Share / challenge panel */
+  .share-panel{position:relative;overflow:hidden;}
+  .share-panel .challenge-flag{
+    display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grad-c);
+    background:rgba(122,108,240,.12);border:1px solid rgba(122,108,240,.3);padding:5px 10px;border-radius:999px;margin-bottom:10px;
+  }
+  .share-scoreline{font-size:14px;color:var(--muted);margin:2px 0 14px;}
+  .share-scoreline b{font-family:'Space Grotesk',sans-serif;color:var(--ink);font-size:17px;}
+
+  /* Challenger compare pill (shown on challenge links) */
+  .challenger-bar{
+    display:none;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:2px;
+    background:linear-gradient(120deg,rgba(122,108,240,.14),rgba(43,212,168,.12));
+    border:1px solid var(--border);border-radius:14px;padding:12px 16px;box-shadow:var(--card-shadow);
+  }
+  .challenger-bar.show{display:flex;}
+  .challenger-bar .cb-lead{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--ink);}
+  .challenger-bar .vs{display:flex;gap:14px;margin-left:auto;flex-wrap:wrap;}
+  .challenger-bar .vs .b{text-align:center;}
+  .challenger-bar .vs .lbl{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);}
+  .challenger-bar .vs .n{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;color:var(--ink);line-height:1;}
+  .challenger-bar .vs .you .n{color:var(--accent);}
+  .challenger-bar .verdict{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;padding:5px 12px;border-radius:999px;}
+  .verdict.win{background:rgba(43,212,168,.16);color:var(--tier-green);}
+  .verdict.lose{background:rgba(232,70,90,.16);color:var(--tier-red);}
+  .verdict.tie{background:var(--border);color:var(--muted);}
+
+  /* ===== HEALTH FACTS ===== */
+  .facts-section{margin-top:8px;}
+  .facts-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+  .facts-head h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(22px,5vw,30px);margin:0;letter-spacing:-.01em;}
+  .facts-head .sub{font-size:14px;color:var(--muted);}
+  .facts-grid{display:grid;grid-template-columns:1fr;gap:14px;}
+  @media (min-width:640px){ .facts-grid{grid-template-columns:1fr 1fr;} }
+  @media (min-width:980px){ .facts-grid{grid-template-columns:1fr 1fr 1fr;} }
+  .fact{
+    position:relative;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 18px 16px;
+    box-shadow:var(--card-shadow);overflow:hidden;transition:transform .18s, border-color .2s;
+  }
+  .fact:hover{transform:translateY(-4px);border-color:var(--accent);}
+  .fact .fnum{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.08em;}
+  .fact .fbig{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,6vw,34px);line-height:1.05;margin:8px 0 6px;letter-spacing:-.01em;
+    background:linear-gradient(120deg,var(--grad-a),var(--grad-b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .fact p{font-size:13.5px;color:var(--muted);margin:0;line-height:1.5;}
+  .fact .src{display:block;margin-top:9px;font-size:11px;color:var(--faint);}
+
+  /* Money / resources: warmer but lower weight */
+  .money-card .kicker{color:var(--accent);}
+  .money-card h4{font-size:17px;}
+  .sponsor-strip{border-radius:var(--radius-sm);}
+
+  /* Methodology + disclaimer: visually recede (buried) */
+  details.method{opacity:.92;}
+  details.method summary{color:var(--muted);}
+  footer.disclaimer{opacity:.85;}
+  .section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:30px 0 6px;border:0;}
+
+  /* Mobile bar */
+  .mobilebar{backdrop-filter:blur(10px);background:color-mix(in srgb, var(--surface) 82%, transparent);}
+  .mobilebar .btn-primary{box-shadow:0 6px 20px -8px rgba(43,212,168,.8);}
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  @keyframes pulseDot{0%,100%{box-shadow:0 0 0 3px rgba(43,212,168,.18);}50%{box-shadow:0 0 0 7px rgba(43,212,168,0);}}
+  @keyframes popIn{0%{transform:scale(.9);opacity:0;}60%{transform:scale(1.03);}100%{transform:scale(1);opacity:1;}}
+  .reveal{animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) both;}
+  .results .score-hero{animation:popIn .55s cubic-bezier(.2,.7,.2,1) both;}
+  #scoreArc{transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1), stroke .5s;}
+  .bar-anim{transition:transform .8s cubic-bezier(.2,.8,.2,1);transform-box:fill-box;transform-origin:left center;}
+  #chart .draw{transition:stroke-dashoffset 1.1s ease;}
+  @media (prefers-reduced-motion: reduce){
+    .reveal,.results .score-hero,.brand .mark{animation:none !important;}
+    #scoreArc,.bar-anim,#chart .draw{transition:none !important;}
+  }
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -238,13 +488,13 @@
   </div>
 
   <header class="top">
-    <div class="eyebrow">The real math on smoking, vaping &amp; drinking</div>
+    <div class="eyebrow"><b>Smoking · vaping · drinking</b> &nbsp;·&nbsp; the actual numbers</div>
     <h1 class="disp">Know your<br>number.</h1>
-    <p class="subtitle">Not scare tactics. Not a lecture. Just what the actual research says your habits add up to. Tap a preset, see your number, share it if you want.</p>
+    <p class="subtitle">No scare tactics, no lecture. Move the sliders, get a straight-up score for what your habits actually add up to, then dare a mate to check theirs.</p>
   </header>
 
-  <div class="callout">
-    <p><strong>The thing most people get wrong:</strong> cutting back doesn't cut your risk by the same amount. Someone drinking + smoking six months a year isn't at "half the risk" of doing it year-round. The gap is way smaller than that. And combining smoking or vaping with drinking doesn't add the risks together, it <em>multiplies</em> them.</p>
+  <div class="callout reveal">
+    <p><strong>The plot twist most people miss:</strong> cutting back doesn't cut your risk by the same amount. Doing it half the year isn't "half the risk" of year-round, the gap is way smaller than that. And mixing smoking or vaping with drinking doesn't just add the two risks together, it <em>multiplies</em> them.</p>
   </div>
 
   <div class="vapenote" id="vapeNote">
@@ -322,6 +572,54 @@
         </div>
       </div>
 
+      <div class="challenger-bar" id="challengerBar">
+        <div class="cb-lead" id="cbLead">Someone dared you to check your number.</div>
+        <div class="vs">
+          <div class="b"><div class="lbl">Their number</div><div class="n" id="cbTheir">--</div></div>
+          <div class="b you"><div class="lbl">Yours</div><div class="n" id="cbYou">--</div></div>
+          <div class="b"><div class="verdict tie" id="cbVerdict">--</div></div>
+        </div>
+      </div>
+
+      <div class="score-hero" id="scoreHero">
+        <div class="gauge-wrap">
+          <svg id="scoreGauge" viewBox="0 0 240 150" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="gauge-center">
+            <div class="score-num" id="scoreNum">--</div>
+            <div class="score-max">/ 100</div>
+          </div>
+        </div>
+        <div class="score-meta">
+          <div class="score-kicker">Your number</div>
+          <div class="score-tier" id="scoreTier">Crunching it...</div>
+          <div class="score-blurb" id="scoreBlurb">Higher is better. 100 means you're barely moving the needle. The lower it drops, the more your habits are stacking up.</div>
+          <div class="score-mult">Biggest single risk: <b id="scoreWorst">--</b></div>
+        </div>
+      </div>
+
+      <div class="stat-tiles">
+        <div class="tile reveal">
+          <div class="tile-k">Biggest risk</div>
+          <div class="tile-v" id="tileWorst">--</div>
+          <div class="tile-s" id="tileWorstLbl">--</div>
+        </div>
+        <div class="tile reveal">
+          <div class="tile-k">Stacked vs added</div>
+          <div class="tile-v" id="tileSynergy">--</div>
+          <div class="tile-s">what combining actually does</div>
+        </div>
+        <div class="tile reveal">
+          <div class="tile-k">vs year-round</div>
+          <div class="tile-v" id="tileYearRound">--</div>
+          <div class="tile-s" id="tileYearRoundLbl">of the full-time risk</div>
+        </div>
+        <div class="tile reveal">
+          <div class="tile-k" id="tileTallyK">Lifetime tally</div>
+          <div class="tile-v" id="tileTally">--</div>
+          <div class="tile-s" id="tileTallyS">on this pattern</div>
+        </div>
+      </div>
+
       <div class="hero-card">
         <div class="left">
           <div class="metric-label"><span class="dot" id="heroDot"></span><span id="heroLabel">Lung cancer</span></div>
@@ -347,9 +645,11 @@
       </div>
 
       <div class="panel share-panel">
-        <h3 class="disp">Share your number</h3>
-        <p class="sub">Download a card for your story, or copy a link that opens this exact scenario.</p>
+        <div class="challenge-flag">⚡ Challenge</div>
+        <h3 class="disp">This is my number. What's yours?</h3>
+        <p class="share-scoreline">Your number came out at <b id="shareScoreInline">--</b>. Send a mate the exact scenario and see if they can beat it.</p>
         <div class="share-actions">
+          <button class="btn btn-challenge" id="btnChallenge" type="button">🎯 Copy challenge link</button>
           <button class="btn btn-primary" id="btnDownload" type="button">⬇ Download card</button>
           <button class="btn btn-secondary" id="btnShare" type="button">↗ Share</button>
           <button class="btn btn-secondary" id="btnCopyLink" type="button">🔗 Copy link</button>
@@ -382,17 +682,64 @@
     </div>
   </div>
 
+  <hr class="section-divider">
+  <section class="facts-section">
+    <div class="facts-head">
+      <h2 class="disp">Stuff worth knowing</h2>
+      <span class="sub">Short, real, and honestly kind of wild.</span>
+    </div>
+    <div class="facts-grid">
+      <div class="fact reveal">
+        <div class="fnum">01</div>
+        <div class="fbig">20 min</div>
+        <p>That's roughly how long after your last cigarette your heart rate and blood pressure start dropping back toward normal. Your body doesn't wait around to start fixing things.</p>
+        <span class="src">US Surgeon General</span>
+      </div>
+      <div class="fact reveal">
+        <div class="fnum">02</div>
+        <div class="fbig">10 sec</div>
+        <p>Nicotine hits your brain in about ten seconds, faster than a shot through an IV. That speed is exactly why it grabs hold so hard and won't let go.</p>
+        <span class="src">National Institute on Drug Abuse</span>
+      </div>
+      <div class="fact reveal">
+        <div class="fnum">03</div>
+        <div class="fbig">×35</div>
+        <p>Heavy smoking and heavy drinking together push mouth and throat cancer risk to around 35 times someone who does neither. They don't add up, they multiply.</p>
+        <span class="src">Jun et al., J Korean Med Sci 2024</span>
+      </div>
+      <div class="fact reveal">
+        <div class="fnum">04</div>
+        <div class="fbig">~90%</div>
+        <p>Quit before about 40 and you dodge roughly 90% of the long-term risk of dying early from smoking. When you stop matters way more than most people think.</p>
+        <span class="src">Jha et al., New England Journal of Medicine 2013</span>
+      </div>
+      <div class="fact reveal">
+        <div class="fnum">05</div>
+        <div class="fbig">Zero</div>
+        <p>There's no amount of alcohol that's been shown to be safe when it comes to cancer risk. Even light, regular drinking nudges the odds up a little.</p>
+        <span class="src">WHO 2023 · US Surgeon General 2025</span>
+      </div>
+      <div class="fact reveal">
+        <div class="fnum">06</div>
+        <div class="fbig">Not vapor</div>
+        <p>Vape clouds aren't "just water." The aerosol carries ultrafine particles and trace metals that ride deep into your lungs, which is why the sliders here aren't zero.</p>
+        <span class="src">National Academies of Sciences, 2018</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
   <div class="money-grid">
-    <div class="money-card">
-      <div class="kicker">Free resource, not a revenue source</div>
-      <h4 class="disp">Actually trying to cut back?</h4>
-      <p>Truth Initiative's This is Quitting is the only US quitline built specifically for people under 25 quitting vaping or smoking: free, text-based, no lectures.</p>
+    <div class="money-card reveal">
+      <div class="kicker">Free help, no strings</div>
+      <h4 class="disp">Actually thinking about cutting back?</h4>
+      <p>This is Quitting (by Truth Initiative) is built specifically for under-25s quitting vaping or smoking. Free, all over text, zero lectures.</p>
       <a class="btn btn-secondary" href="https://truthinitiative.org/thisisquitting" target="_blank" rel="noopener">Text DITCHVAPE to 88709 →</a>
     </div>
-    <div class="money-card">
+    <div class="money-card reveal">
       <div class="kicker">Keeps this free &amp; ad-light</div>
       <h4 class="disp">Chip in</h4>
-      <p>This tool runs on no tobacco/vape/alcohol sponsorships, ever. That's a hard line. If it was useful, a one-time tip keeps it online and ad-free.</p>
+      <p>No tobacco, vape, or alcohol money funds this. Ever. That's the whole point. If it was useful, a one-time tip keeps it online and ad-light.</p>
       <a class="btn btn-secondary" href="#" id="donateLink" target="_blank" rel="noopener">Support this project →</a>
       <p class="footnote">Placeholder link. Wire up to your Ko-fi / Buy Me a Coffee / Stripe Payment Link.</p>
     </div>
@@ -690,7 +1037,12 @@
       bar.setAttribute('x',padL); bar.setAttribute('y',y);
       bar.setAttribute('width', Math.max(2,xw(r.value))); bar.setAttribute('height',rowH);
       bar.setAttribute('fill', r.color || '#3B6E8F'); bar.setAttribute('rx','5'); bar.setAttribute('opacity','0.92');
+      bar.setAttribute('class','bar-anim');
       svg.appendChild(bar);
+      if(chartAnimate && !REDUCE){
+        bar.style.transform='scaleX(0.0001)';
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{ bar.style.transform='scaleX(1)'; }));
+      }
       const val = document.createElementNS(ns,'text');
       val.setAttribute('x', padL + xw(r.value) + 8); val.setAttribute('y', y+rowH*0.65);
       val.setAttribute('font-size','12.5'); val.setAttribute('fill',textColor);
@@ -698,6 +1050,7 @@
       val.textContent = fmt(r.value);
       svg.appendChild(val);
     });
+    chartAnimate = false;
   }
 
   function drawLineChart(cigs, months, drinks, alcMonths, years, product, focusCond){
@@ -832,6 +1185,182 @@
     }catch(e){}
   }
 
+  // ===== Facelift: score, gauge, tiles, challenge =====
+  const REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const gid = id => document.getElementById(id);
+  function cssVar(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  let chartAnimate = true;
+  let lastScoreData = {score:100, rr:1, cond:null};
+  const CHAL = {active:false, their:null};
+
+  function overallRisk(cigs, months, drinks, alcMonths, years, product){
+    let mx = 1, worst = null;
+    allConditions().forEach(c=>{
+      const rr = combinedRR(c, cigs, months, drinks, alcMonths, years, product);
+      if(rr > mx){ mx = rr; worst = c; }
+    });
+    return {rr:mx, cond:worst};
+  }
+  function riskToScore(rr){
+    const s = 100 * Math.pow(1/Math.max(rr,1), 0.34);
+    return Math.round(Math.max(1, Math.min(100, s)));
+  }
+  const TIERS = [
+    {min:85, label:"Barely a blip",       cvar:'--tier-green',  glow:'rgba(43,227,172,.40)', blurb:"You're barely moving the needle. Whatever you're doing, it isn't stacking up much."},
+    {min:70, label:"Starting to stack",   cvar:'--tier-teal',   glow:'rgba(63,208,198,.38)', blurb:"Still in decent shape, but it's starting to add up. Small stuff compounds over years."},
+    {min:50, label:"Adding up",           cvar:'--tier-amber',  glow:'rgba(245,192,68,.36)', blurb:"This is where it gets real. Your habits are meaningfully bumping up the odds."},
+    {min:30, label:"Stacking up fast",    cvar:'--tier-orange', glow:'rgba(255,145,71,.36)', blurb:"The numbers climb hard here, especially where smoking or vaping meets drinking."},
+    {min:0,  label:"Maxed out",           cvar:'--tier-red',    glow:'rgba(255,96,112,.40)', blurb:"About as high as this model goes. Good news: it drops back just as fast when you ease off."}
+  ];
+  function tierFor(score){ return TIERS.find(t=>score>=t.min) || TIERS[TIERS.length-1]; }
+
+  function animNum(el, to, opts){
+    if(!el) return;
+    opts = opts||{};
+    const fmtFn = opts.fmt || (v=>Math.round(v).toLocaleString());
+    const from = (typeof el._val === 'number') ? el._val : to;
+    if(REDUCE || from===to){ el._val = to; el.textContent = fmtFn(to); return; }
+    const dur = opts.dur || 550, t0 = performance.now();
+    if(el._raf) cancelAnimationFrame(el._raf);
+    if(el._to) clearTimeout(el._to);
+    el._val = to;
+    function step(now){
+      const p = Math.min(1, (now-t0)/dur);
+      const e = 1 - Math.pow(1-p, 3);
+      el.textContent = fmtFn(from + (to-from)*e);
+      if(p<1){ el._raf = requestAnimationFrame(step); }
+      else { el.textContent = fmtFn(to); }
+    }
+    el._raf = requestAnimationFrame(step);
+    // Guarantee the final value even if rAF is throttled (e.g. background tab).
+    el._to = setTimeout(()=>{ el.textContent = fmtFn(to); }, dur + 150);
+  }
+
+  let gaugeArc=null, gaugeTrack=null, gaugeLen=0;
+  function buildGauge(){
+    const svg = gid('scoreGauge'); if(!svg || gaugeArc) return;
+    const ns='http://www.w3.org/2000/svg';
+    const cx=120, cy=130, r=100;
+    const d = `M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}`;
+    gaugeTrack = document.createElementNS(ns,'path');
+    gaugeTrack.setAttribute('d', d); gaugeTrack.setAttribute('fill','none');
+    gaugeTrack.setAttribute('stroke', cssVar('--border')); gaugeTrack.setAttribute('stroke-width','18');
+    gaugeTrack.setAttribute('stroke-linecap','round');
+    svg.appendChild(gaugeTrack);
+    gaugeArc = document.createElementNS(ns,'path');
+    gaugeArc.setAttribute('id','scoreArc'); gaugeArc.setAttribute('d', d); gaugeArc.setAttribute('fill','none');
+    gaugeArc.setAttribute('stroke', cssVar('--accent')); gaugeArc.setAttribute('stroke-width','18');
+    gaugeArc.setAttribute('stroke-linecap','round');
+    svg.appendChild(gaugeArc);
+    gaugeLen = gaugeArc.getTotalLength();
+    gaugeArc.setAttribute('stroke-dasharray', gaugeLen);
+    gaugeArc.setAttribute('stroke-dashoffset', gaugeLen);
+  }
+
+  function renderScore(){
+    const {cigs, months, drinks, alcMonths, years, product} = currentInputs();
+    const {rr, cond} = overallRisk(cigs, months, drinks, alcMonths, years, product);
+    const score = riskToScore(rr);
+    const tier = tierFor(score);
+    const col = cssVar(tier.cvar);
+    lastScoreData = {score, rr, cond};
+
+    const hero = gid('scoreHero');
+    if(hero){ hero.style.setProperty('--tier-c', col); hero.style.setProperty('--tier-glow', tier.glow); }
+    buildGauge();
+    if(gaugeArc){
+      gaugeTrack.setAttribute('stroke', cssVar('--border'));
+      gaugeArc.setAttribute('stroke', col);
+      gaugeArc.setAttribute('stroke-dashoffset', gaugeLen * (1 - score/100));
+    }
+    animNum(gid('scoreNum'), score, {fmt:v=>String(Math.round(v))});
+    const tEl = gid('scoreTier'); if(tEl){ tEl.textContent = tier.label; }
+    const bEl = gid('scoreBlurb'); if(bEl){ bEl.textContent = tier.blurb; }
+    const wEl = gid('scoreWorst'); if(wEl){ wEl.textContent = cond ? (fmt(rr)+' · '+cond.label.replace(/\s*\(.*\)/,'')) : 'nothing notable'; }
+    const si = gid('shareScoreInline'); if(si){ si.textContent = score; }
+
+    renderTiles(cigs, months, drinks, alcMonths, years, product, rr, cond);
+    renderChallenge(score);
+  }
+
+  function renderTiles(cigs, months, drinks, alcMonths, years, product, worstRR, worstCond){
+    // Biggest risk
+    const tw = gid('tileWorst'), twl = gid('tileWorstLbl');
+    if(tw){ tw.textContent = fmt(worstRR); }
+    if(twl){ twl.textContent = worstCond ? worstCond.label.replace(/\s*\(.*\)/,'') : 'nothing notable yet'; }
+
+    // Synergy: max (actual / additive) across cancers with both smoking & alcohol
+    let bestRatio = 1;
+    allConditions().forEach(c=>{
+      if(c.kind==='cancer' && c.smoking && c.alcohol){
+        const s = smokingComponent(c, cigs, months, years, product);
+        const a = alcoholComponent(c, drinks, alcMonths);
+        const additive = 1 + (s-1) + (a-1);
+        const actual = s * a;
+        if(additive > 1){ bestRatio = Math.max(bestRatio, actual/additive); }
+      }
+    });
+    const ts = gid('tileSynergy');
+    if(ts){ ts.textContent = bestRatio>1.03 ? ('×'+bestRatio.toFixed(1)) : '×1.0'; }
+
+    // vs year-round (worst cond)
+    const tyr = gid('tileYearRound'), tyrl = gid('tileYearRoundLbl');
+    if(tyr){
+      if(worstCond){
+        const you = combinedRR(worstCond, cigs, months, drinks, alcMonths, years, product);
+        const full = combinedRR(worstCond, cigs, 12, drinks, 12, years, product);
+        if(full > 1.02){
+          const pct = Math.round(Math.max(0, Math.min(100, (you-1)/(full-1)*100)));
+          tyr.textContent = pct + '%';
+          if(tyrl){ tyrl.textContent = 'of the full-time risk'; }
+        } else { tyr.textContent = '—'; if(tyrl){ tyrl.textContent = 'nothing to compare yet'; } }
+      } else { tyr.textContent = '—'; if(tyrl){ tyrl.textContent = 'nothing to compare yet'; } }
+    }
+
+    // Lifetime tally
+    const tk = gid('tileTallyK'), tt = gid('tileTally'), tts = gid('tileTallyS');
+    const cigTotal = Math.round(cigs * 30.4 * months * years);
+    const drinkTotal = Math.round(drinks * 30.4 * alcMonths * years);
+    if(cigs > 0){
+      if(tk){ tk.textContent = product.lifetimeLabel; }
+      animNum(tt, cigTotal);
+      if(tts){ tts.textContent = 'over ' + years + ' years'; }
+    } else {
+      if(tk){ tk.textContent = 'Lifetime drinks'; }
+      animNum(tt, drinkTotal);
+      if(tts){ tts.textContent = 'over ' + years + ' years'; }
+    }
+  }
+
+  function renderChallenge(score){
+    if(!CHAL.active) return;
+    const bar = gid('challengerBar'); if(!bar) return;
+    bar.classList.add('show');
+    const their = CHAL.their;
+    const t = gid('cbTheir'); if(t){ t.textContent = their; }
+    animNum(gid('cbYou'), score, {fmt:v=>String(Math.round(v))});
+    const v = gid('cbVerdict');
+    if(v){
+      if(score > their){ v.textContent = "You're ahead ✓"; v.className='verdict win'; }
+      else if(score < their){ v.textContent = "They're ahead"; v.className='verdict lose'; }
+      else { v.textContent = "Dead heat"; v.className='verdict tie'; }
+    }
+  }
+
+  async function copyChallenge(){
+    updateURL();
+    const score = lastScoreData.score;
+    let link;
+    try{
+      const u = new URL(location.href);
+      u.searchParams.set('chal','1'); u.searchParams.set('cs', String(score));
+      link = u.toString();
+    }catch(e){ link = location.href; }
+    try{ await navigator.clipboard.writeText(link); toast('Challenge link copied ✓ Send it to a mate and see if they can beat '+score+'.'); }
+    catch(e){ toast('Could not copy. Copy the URL from your address bar.'); }
+    if(window.kynTrack){ try{ kynTrack('share', {kind:'challenge', score}); }catch(e){} }
+  }
+
   function update(){
     const {cigs, months, drinks, alcMonths, years, product} = currentInputs();
     els.cigsVal.textContent = cigs;
@@ -864,6 +1393,7 @@
     renderSynergy(focusCond, cigs, months, drinks, alcMonths, years, product);
     drawBarChart(cigs, months, drinks, alcMonths, years, product);
     drawLineChart(cigs, months, drinks, alcMonths, years, product, focusCond);
+    renderScore();
     updateURL();
   }
 
@@ -875,7 +1405,9 @@
     [...els.presets.querySelectorAll('.preset-chip')].forEach(b=>{
       b.classList.toggle('active', b.getAttribute('data-preset')===name);
     });
+    chartAnimate = true;
     update();
+    if(window.kynTrack){ try{ kynTrack('preset', {preset:name, score:lastScoreData.score}); }catch(e){} }
   }
   els.presets.addEventListener('click', (e)=>{
     const btn = e.target.closest('.preset-chip'); if(!btn) return;
@@ -890,6 +1422,7 @@
     document.documentElement.setAttribute('data-theme', t);
     els.themeToggle.textContent = t==='dark' ? '☀' : '◐';
     try{ localStorage.setItem('kyn-theme', t); }catch(e){}
+    chartAnimate = true;
     update(); // redraw charts with new CSS var colors
   }
   els.themeToggle.addEventListener('click', ()=>{
@@ -907,14 +1440,15 @@
       b.setAttribute('aria-selected', b===btn ? 'true':'false');
     });
     populateFocusSelect();
+    chartAnimate = true;
     update();
   });
   ['input','change'].forEach(evt=>{
     [els.cigs, els.months, els.drinks, els.alcMonths, els.years].forEach(el=>{
       el.addEventListener(evt, ()=>{ clearPresetActive(); update(); });
     });
-    els.productType.addEventListener(evt, update);
-    els.focusCondition.addEventListener(evt, update);
+    els.productType.addEventListener(evt, ()=>{ chartAnimate = true; update(); });
+    els.focusCondition.addEventListener(evt, ()=>{ chartAnimate = true; update(); });
   });
 
   // ---- share card ----
@@ -932,69 +1466,72 @@
     const canvas = document.getElementById('shareCanvas');
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
-    const dark = document.documentElement.getAttribute('data-theme')==='dark';
-    const bg = dark ? '#0E1418' : '#12181D';
-    const accent = '#52B8A0';
-    const ink = '#EAF1F2';
-    const muted = '#93A3AA';
+    const bg = '#0A0F13';
+    const ink = '#F1F7F8';
+    const muted = '#9DB0B8';
 
-    ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
-    // subtle accent bar
-    ctx.fillStyle = accent; ctx.fillRect(0,0,W,14);
-
-    const focusKey = els.focusCondition.value;
-    const focusCond = allConditions().find(c=>c.key===focusKey) || allConditions().find(c=>c.key==='lung');
     const {cigs, months, drinks, alcMonths, years, product} = currentInputs();
-    const you = combinedRR(focusCond, cigs, months, drinks, alcMonths, years, product);
+    const {rr, cond} = overallRisk(cigs, months, drinks, alcMonths, years, product);
+    const score = riskToScore(rr);
+    const tier = tierFor(score);
+    const accent = cssVar(tier.cvar) || '#2BE3AC';
 
+    // background with a soft tier glow
+    ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+    const glow = ctx.createRadialGradient(W*0.5, 470, 40, W*0.5, 470, 620);
+    glow.addColorStop(0, hexA(accent, 0.20)); glow.addColorStop(1, hexA(accent, 0));
+    ctx.fillStyle = glow; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = accent; ctx.fillRect(0,0,W,16);
+
+    ctx.textAlign = 'left';
     ctx.fillStyle = accent;
     ctx.font = '700 30px "JetBrains Mono", monospace';
     ctx.fillText('KNOW YOUR NUMBER', 70, 130);
 
     ctx.fillStyle = muted;
-    ctx.font = '500 30px "Inter", sans-serif';
-    ctx.fillText(focusCond.label.toUpperCase(), 70, 190);
+    ctx.font = '500 34px "Inter", sans-serif';
+    ctx.fillText('My number is', 70, 220);
+
+    // giant score, centered
+    ctx.textAlign = 'center';
+    ctx.fillStyle = accent;
+    ctx.font = '700 380px "Space Grotesk", sans-serif';
+    ctx.fillText(String(score), W/2, 590);
+    ctx.fillStyle = muted;
+    ctx.font = '600 44px "JetBrains Mono", monospace';
+    ctx.fillText('/ 100', W/2, 660);
 
     ctx.fillStyle = ink;
-    ctx.font = '700 220px "Space Grotesk", sans-serif';
-    ctx.fillText(fmt(you), 62, 480);
+    ctx.font = '700 54px "Space Grotesk", sans-serif';
+    ctx.fillText(tier.label, W/2, 760);
 
-    ctx.fillStyle = muted;
-    ctx.font = '500 32px "Inter", sans-serif';
-    wrapText(ctx, 'relative risk vs. someone who does neither', 70, 560, W-140, 40);
+    ctx.textAlign = 'left';
+    ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+    ctx.beginPath(); ctx.moveTo(70,850); ctx.lineTo(W-70,850); ctx.stroke();
 
-    // divider
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-    ctx.beginPath(); ctx.moveTo(70,650); ctx.lineTo(W-70,650); ctx.stroke();
+    ctx.fillStyle = muted; ctx.font = '700 24px "JetBrains Mono", monospace';
+    ctx.fillText('BIGGEST SINGLE RISK', 70, 910);
+    ctx.fillStyle = ink; ctx.font = '700 56px "Space Grotesk", sans-serif';
+    const worstLbl = cond ? (fmt(rr) + '  ' + cond.label.replace(/\s*\(.*\)/,'')) : 'Nothing notable';
+    ctx.fillText(worstLbl, 70, 975);
 
-    // mini stats row
-    const stats = [
-      ['YOU', fmt(you)],
-      ['YEAR-ROUND', fmt(combinedRR(focusCond, cigs, 12, drinks, 12, years, product))],
-      ['NEITHER', '1.0×']
-    ];
-    const colW = (W-140)/3;
-    stats.forEach((s,i)=>{
-      const x = 70 + i*colW;
-      ctx.fillStyle = muted; ctx.font = '700 22px "JetBrains Mono", monospace';
-      ctx.fillText(s[0], x, 710);
-      ctx.fillStyle = ink; ctx.font = '700 52px "Space Grotesk", sans-serif';
-      ctx.fillText(s[1], x, 770);
-    });
-
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-    ctx.beginPath(); ctx.moveTo(70,830); ctx.lineTo(W-70,830); ctx.stroke();
-
-    ctx.fillStyle = muted; ctx.font = '500 26px "Inter", sans-serif';
-    wrapText(ctx, 'Real math on smoking, vaping, and drinking. Not scare tactics, not a lecture.', 70, 890, W-140, 36);
-
-    ctx.fillStyle = accent; ctx.font = '700 34px "Space Grotesk", sans-serif';
-    ctx.fillText('→ see your number', 70, H-90);
+    ctx.fillStyle = ink; ctx.font = '700 60px "Space Grotesk", sans-serif';
+    wrapText(ctx, "What's yours?", 70, 1120, W-140, 70);
+    ctx.fillStyle = accent; ctx.font = '700 40px "JetBrains Mono", monospace';
+    ctx.fillText('knowyournumber.io', 70, 1215);
 
     ctx.fillStyle = muted; ctx.font = '400 22px "Inter", sans-serif';
-    ctx.fillText('Educational model, not medical advice.', 70, H-40);
+    ctx.fillText('Higher is better · Educational model, not medical advice.', 70, H-40);
 
+    ctx.textAlign = 'left';
     return canvas;
+  }
+  function hexA(hex, a){
+    let h = (hex||'').replace('#','').trim();
+    if(h.length===3){ h = h.split('').map(c=>c+c).join(''); }
+    const n = parseInt(h||'2be3ac',16);
+    const r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+    return 'rgba('+r+','+g+','+b+','+a+')';
   }
   function wrapText(ctx, text, x, y, maxWidth, lineHeight){
     const words = text.split(' ');
@@ -1062,6 +1599,8 @@
   }
   document.getElementById('btnCopyLink').addEventListener('click', copyLink);
   document.getElementById('btnCopyLinkMobile').addEventListener('click', copyLink);
+  const _btnChal = document.getElementById('btnChallenge');
+  if(_btnChal) _btnChal.addEventListener('click', copyChallenge);
 
   // ---- init: theme + URL state ----
   (function init(){
@@ -1084,6 +1623,10 @@
       if(p.has('p') && productData[p.get('p')]) els.productType.value = p.get('p');
       if(p.has('v')){ currentView = p.get('v')==='all' ? 'all' : 'cancer'; }
       if(p.has('c')||p.has('m')||p.has('d')) clearPresetActive();
+      if(p.has('chal') && p.has('cs')){
+        const cs = parseInt(p.get('cs'),10);
+        if(Number.isFinite(cs)){ CHAL.active = true; CHAL.their = Math.max(1, Math.min(100, cs)); }
+      }
     }catch(e){}
 
     [...els.viewToggle.querySelectorAll('button')].forEach(b=>{
