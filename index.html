@@ -462,6 +462,18 @@
   .mobilebar{backdrop-filter:blur(10px);background:color-mix(in srgb, var(--surface) 82%, transparent);}
   .mobilebar .btn-primary{box-shadow:0 6px 20px -8px rgba(43,212,168,.8);}
 
+  /* ===== LIMITATIONS PANEL ===== */
+  .limits{margin:8px 0;}
+  .limits-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--card-shadow);}
+  .limits h2{margin:0 0 12px;font-size:clamp(20px,4vw,26px);letter-spacing:-.01em;}
+  .limits p{font-size:14.5px;color:var(--muted);margin:0 0 12px;max-width:72ch;}
+  .limits p strong{color:var(--ink);}
+  .limits-sub{font-weight:600;color:var(--ink) !important;margin-bottom:8px !important;}
+  .limits-list{margin:0 0 14px;padding-left:18px;}
+  .limits-list li{font-size:14px;color:var(--muted);margin-bottom:8px;line-height:1.5;}
+  .limits-list b{color:var(--ink);}
+  .limits-foot{font-size:13.5px;border-top:1px solid var(--border);padding-top:12px;margin-top:2px !important;}
+
   /* ===== CO-FACTORS EXPANDER ===== */
   .cofactors{margin-top:20px;border-top:1px dashed var(--border);padding-top:6px;}
   .cofactors summary{cursor:pointer;list-style:none;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
@@ -735,6 +747,21 @@
   </div>
 
   <hr class="section-divider">
+  <section class="limits reveal">
+    <div class="limits-inner">
+      <h2 class="disp">What your number is (and isn't)</h2>
+      <p>It's a <strong>relative risk</strong>: how much smoking, vaping, drinking (and any details you add) multiply your odds versus someone otherwise like you who doesn't. It is <strong>not</strong> your total or absolute risk, and it can't say whether you personally will get sick.</p>
+      <p class="limits-sub">What it deliberately leaves out:</p>
+      <ul class="limits-list">
+        <li><b>Age</b> — the single biggest driver of actual risk. It sets the baseline your number multiplies; this tool holds it steady rather than predict a probability.</li>
+        <li><b>Genetics</b> beyond a simple family-history toggle (no BRCA, Lynch or other inherited syndromes).</li>
+        <li><b>Everything else</b> — diet, exercise, air pollution, chemical and occupational exposure, infections (HPV only if you tick it), and plenty more.</li>
+      </ul>
+      <p class="limits-foot">This is an <strong>educational model built from published population studies</strong>, not a diagnosis, a prediction, or medical advice. If anything here worries you, talk to a doctor.</p>
+    </div>
+  </section>
+
+  <hr class="section-divider">
   <section class="facts-section">
     <div class="facts-head">
       <h2 class="disp">Stuff worth knowing</h2>
@@ -852,6 +879,9 @@
       <h5>Why heart disease and stroke don't include an alcohol effect</h5>
       <p>Alcohol's relationship to cardiovascular disease is genuinely contested science: some studies suggest lower risk at moderate intake, and more recent reviews dispute this. Rather than take a side, this tool models heart disease and stroke from tobacco/vaping only.</p>
 
+      <h5>Optional co-factors (the "refine my number" section)</h5>
+      <p>These are independent of smoking and alcohol and default to no effect. <strong>BMI</strong> uses per-cancer and cardiovascular relative risks per 5 kg/m² from Renehan et al. (<em>Lancet</em> 2008); note it drives oesophageal <em>adeno</em>carcinoma, so it is deliberately not applied to the squamous-cell oesophageal risk modelled here. <strong>Blood pressure</strong> raises heart and stroke risk only, per the Prospective Studies Collaboration (Lewington, <em>Lancet</em> 2002). <strong>Family history</strong> applies a modest generic first-degree-relative multiplier (breast/colorectal/lung and CHD metas). <strong>HPV</strong> is handled as a separate parallel pathway for throat (oropharyngeal) cancer, added rather than multiplied, because HPV-positive oropharyngeal cancer is a largely distinct disease from the smoking/alcohol-driven kind (D'Souza, <em>NEJM</em> 2007). Age is not offered as an input because it sets the absolute baseline the whole model multiplies, rather than acting as a modifier.</p>
+
       <h5>Important limitations</h5>
       <ul>
         <li>No study has tracked people who use these substances heavily for part of the year and stop, year after year. This tool approximates that as an averaged dose spread across the year, which is more likely to <em>understate</em> than overstate real risk.</li>
@@ -865,8 +895,8 @@
   </details>
 
   <footer class="disclaimer">
-    <span>Educational model from population-level research (and, for vaping cancer risk, a labeled projection), not medical advice. <a href="privacy.html">Privacy &amp; cookies</a></span>
-    <span>Data current as of 2026.</span>
+    <span>An educational <em>relative-risk</em> model built from published population studies (with vaping cancer risk a labeled projection). It isolates smoking, vaping and alcohol, so it is not your total risk, a prediction, or a diagnosis, and not a substitute for medical advice. <a href="privacy.html">Privacy &amp; cookies</a></span>
+    <span>Parameters cited per-row in "How this is calculated". Current as of 2026.</span>
   </footer>
 
 </div>
