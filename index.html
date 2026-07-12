@@ -553,6 +553,19 @@
         <input type="range" id="years" min="1" max="50" value="15" step="1">
         <div class="scale-labels"><span>1</span><span>25</span><span>50</span></div>
       </div>
+      <div class="field">
+        <label id="statusLabel">Do you still do this?</label>
+        <div class="view-toggle status-toggle" id="statusToggle" role="tablist" style="display:inline-flex;">
+          <button type="button" class="active" data-status="current" role="tab" aria-selected="true">Still do</button>
+          <button type="button" data-status="former" role="tab" aria-selected="false">I quit</button>
+        </div>
+      </div>
+      <div class="field" id="quitField" style="display:none;">
+        <label for="ysq">Years since you quit <span class="val" id="ysqVal">5</span></label>
+        <input type="range" id="ysq" min="0" max="40" value="5" step="1">
+        <div class="scale-labels"><span>0</span><span>20</span><span>40</span></div>
+        <p class="footnote" id="quitNote"></p>
+      </div>
 
       <div class="lifetime-count">
         <div class="row"><span id="lifetimeCigsLabel">Lifetime cigarettes</span><span class="num" id="lifetimeCigs">0</span></div>
@@ -907,6 +920,11 @@
     lifetimeCigs: document.getElementById('lifetimeCigs'),
     lifetimeDrinks: document.getElementById('lifetimeDrinks'),
     viewToggle: document.getElementById('viewToggle'),
+    statusToggle: document.getElementById('statusToggle'),
+    ysq: document.getElementById('ysq'),
+    ysqVal: document.getElementById('ysqVal'),
+    quitField: document.getElementById('quitField'),
+    quitNote: document.getElementById('quitNote'),
     focusCondition: document.getElementById('focusCondition'),
     heroDot: document.getElementById('heroDot'),
     heroLabel: document.getElementById('heroLabel'),
@@ -928,6 +946,8 @@
   };
 
   let currentView = 'cancer';
+  let usageStatus = 'current';  // 'current' | 'former'
+  let yearsSinceQuit = 0;
 
   // ---- risk model (unchanged from validated version) ----
   function cancerCeilingRR(ceiling, packYears){
@@ -965,24 +985,56 @@
     const all = allConditions();
     return currentView==='cancer' ? all.filter(c=>c.kind==='cancer') : all;
   }
+  // ---- cessation decay: fraction of EXCESS relative risk remaining, y = years since quit ----
+  // Sourced curves (see methodology): CVD recovers fast; cancers over ~10-20y; bladder never fully.
+  function lungFrac(y){
+    const pts=[[0,1],[5,0.57],[10,0.37],[15,0.27],[20,0.20],[30,0.15],[45,0.12]]; // ATS 2020 meta
+    if(y<=0) return 1;
+    for(let i=1;i<pts.length;i++){ if(y<=pts[i][0]){ const a=pts[i-1],b=pts[i]; return a[1]+(b[1]-a[1])*(y-a[0])/(b[0]-a[0]); } }
+    return pts[pts.length-1][1];
+  }
+  function smokeDecayFrac(cond, y){
+    if(y<=0) return 1;
+    if(cond.kind==='heart') return Math.exp(-y*0.46);   // ~halves in 1-2y, ~baseline by 15y
+    if(cond.kind==='stroke') return Math.exp(-y*0.42);  // ~baseline by 5-10y
+    const k=cond.key;
+    if(k==='lung') return lungFrac(y);
+    if(k==='larynx'||k==='pharynx'||k==='oral'||k==='esophagus') return Math.exp(-y*0.11); // ~baseline by 20y (INHANCE)
+    if(k==='bladder') return 0.45 + 0.55*Math.exp(-y*0.16); // plateaus ~+45% of excess (never fully resets)
+    return Math.exp(-y*0.075); // other cancers: slow, ~baseline by ~25y
+  }
+  function alcDecayFrac(cond, y){
+    if(y<=0) return 1;
+    const k=cond.key;
+    if(k==='larynx'||k==='pharynx'||k==='oral'||k==='esophagus') return y<15 ? 1 : Math.max(0, 1-(y-15)/5); // flat to ~15y, then to baseline by 20y (INHANCE/Marron)
+    if(k==='liver') return Math.exp(-y*0.065); // ~6-7%/yr, washout ~23y (Heckley 2011)
+    return Math.exp(-y*0.06);
+  }
+  function withDecay(rr, frac){ return rr<=1 ? rr : 1 + (rr-1)*frac; }
+
   function smokingComponent(cond, cigs, months, years, product){
     if(cond.kind==='heart' || cond.kind==='stroke' || !cond.smoking) return 1;
     const dose = cigs * (months/12) * product.cancerMult;
     const py = (dose/20) * years;
-    return cancerCeilingRR(cond.smoking, py);
+    const rr = cancerCeilingRR(cond.smoking, py);
+    return (usageStatus==='former' && yearsSinceQuit>0) ? withDecay(rr, smokeDecayFrac(cond, yearsSinceQuit)) : rr;
   }
   function alcoholComponent(cond, drinks, alcMonths){
     if(cond.kind==='heart' || cond.kind==='stroke' || !cond.alcohol) return 1;
     const dose = drinks * (alcMonths/12);
-    return alcoholCancerRR(cond.alcohol, dose);
+    const rr = alcoholCancerRR(cond.alcohol, dose);
+    return (usageStatus==='former' && yearsSinceQuit>0) ? withDecay(rr, alcDecayFrac(cond, yearsSinceQuit)) : rr;
   }
   function cvdComponent(cond, cigs, months, product){
     if(cond.kind!=='heart' && cond.kind!=='stroke') return 1;
+    let rr;
     if(product.cvdType==='vape'){
-      return cond.kind==='heart' ? vapeHeartRR(months, cigs) : vapeStrokeRR(months, cigs);
+      rr = cond.kind==='heart' ? vapeHeartRR(months, cigs) : vapeStrokeRR(months, cigs);
+    } else {
+      const dose = cigs * (months/12) * product.cvdMult;
+      rr = cond.kind==='heart' ? chdRR(dose) : strokeRR(dose);
     }
-    const dose = cigs * (months/12) * product.cvdMult;
-    return cond.kind==='heart' ? chdRR(dose) : strokeRR(dose);
+    return (usageStatus==='former' && yearsSinceQuit>0) ? withDecay(rr, smokeDecayFrac(cond, yearsSinceQuit)) : rr;
   }
   function combinedRR(cond, cigs, months, drinks, alcMonths, years, product){
     if(cond.kind==='heart' || cond.kind==='stroke') return cvdComponent(cond, cigs, months, product);
@@ -1200,6 +1252,7 @@
       p.set('d', els.drinks.value); p.set('am', els.alcMonths.value);
       p.set('y', els.years.value); p.set('p', els.productType.value);
       p.set('f', els.focusCondition.value); p.set('v', currentView);
+      if(usageStatus==='former'){ p.set('u','f'); p.set('q', els.ysq.value); }
       history.replaceState(null, '', '?' + p.toString());
     }catch(e){}
   }
@@ -1372,6 +1425,7 @@
     p.set('d', els.drinks.value); p.set('am', els.alcMonths.value);
     p.set('y', els.years.value); p.set('p', els.productType.value);
     p.set('f', els.focusCondition.value); p.set('v', currentView);
+    if(usageStatus==='former'){ p.set('u','f'); p.set('q', els.ysq.value); }
     return p;
   }
   // Share links route through /api/share, which serves a per-score preview image
@@ -1397,6 +1451,14 @@
   }
 
   function update(){
+    yearsSinceQuit = (usageStatus==='former') ? (parseInt(els.ysq.value,10)||0) : 0;
+    els.quitField.style.display = (usageStatus==='former') ? '' : 'none';
+    els.ysqVal.textContent = yearsSinceQuit;
+    if(usageStatus==='former'){
+      els.quitNote.textContent = yearsSinceQuit===0
+        ? 'Set how long ago you stopped. Risk starts unwinding the day you quit.'
+        : 'Risk shown is ' + yearsSinceQuit + (yearsSinceQuit===1?' year':' years') + ' after quitting. Heart risk fades fast; cancer risk unwinds over 10-20 years.';
+    }
     const {cigs, months, drinks, alcMonths, years, product} = currentInputs();
     els.cigsVal.textContent = cigs;
     els.monthsVal.textContent = months;
@@ -1478,8 +1540,21 @@
     chartAnimate = true;
     update();
   });
+  // ---- usage status (current vs former) ----
+  els.statusToggle.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-status]');
+    if(!btn) return;
+    usageStatus = btn.getAttribute('data-status');
+    [...els.statusToggle.querySelectorAll('button')].forEach(b=>{
+      b.classList.toggle('active', b===btn);
+      b.setAttribute('aria-selected', b===btn ? 'true':'false');
+    });
+    chartAnimate = true;
+    update();
+    if(window.kynTrack){ try{ kynTrack('view', {usage:usageStatus}); }catch(e){} }
+  });
   ['input','change'].forEach(evt=>{
-    [els.cigs, els.months, els.drinks, els.alcMonths, els.years].forEach(el=>{
+    [els.cigs, els.months, els.drinks, els.alcMonths, els.years, els.ysq].forEach(el=>{
       el.addEventListener(evt, ()=>{ clearPresetActive(); update(); });
     });
     els.productType.addEventListener(evt, ()=>{ chartAnimate = true; update(); });
@@ -1657,6 +1732,7 @@
       if(p.has('y')) els.years.value = p.get('y');
       if(p.has('p') && productData[p.get('p')]) els.productType.value = p.get('p');
       if(p.has('v')){ currentView = p.get('v')==='all' ? 'all' : 'cancer'; }
+      if(p.get('u')==='f'){ usageStatus = 'former'; if(p.has('q')) els.ysq.value = p.get('q'); }
       if(p.has('c')||p.has('m')||p.has('d')) clearPresetActive();
       if(p.has('chal') && p.has('cs')){
         const cs = parseInt(p.get('cs'),10);
@@ -1666,6 +1742,11 @@
 
     [...els.viewToggle.querySelectorAll('button')].forEach(b=>{
       const isActive = b.getAttribute('data-view')===currentView;
+      b.classList.toggle('active', isActive);
+      b.setAttribute('aria-selected', isActive?'true':'false');
+    });
+    [...els.statusToggle.querySelectorAll('button')].forEach(b=>{
+      const isActive = b.getAttribute('data-status')===usageStatus;
       b.classList.toggle('active', isActive);
       b.setAttribute('aria-selected', isActive?'true':'false');
     });
