@@ -1102,5 +1102,116 @@
   })();
 })();
 </script>
+
+<!-- First-party analytics: consent-gated, no personal identifiers, never sold. See /privacy.html -->
+<style>
+  #kyn-consent-banner{position:fixed;left:12px;right:12px;bottom:12px;z-index:9999;
+    background:var(--surface,#161E23);border:1px solid var(--border,#263139);border-radius:14px;
+    box-shadow:0 8px 30px rgba(0,0,0,.35);font-family:'Inter',system-ui,sans-serif;}
+  #kyn-consent-banner .kyn-cb-inner{display:flex;gap:14px;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;padding:14px 16px;max-width:900px;margin:0 auto;}
+  #kyn-consent-banner .kyn-cb-text{color:var(--muted,#9CACB3);font-size:13.5px;line-height:1.5;flex:1 1 300px;}
+  #kyn-consent-banner .kyn-cb-text a{color:var(--accent,#52B8A0);text-decoration:underline;}
+  #kyn-consent-banner .kyn-cb-btns{display:flex;gap:8px;flex:0 0 auto;}
+  #kyn-consent-banner .kyn-cb-btn{border:0;border-radius:9px;padding:9px 18px;font-size:14px;font-weight:600;
+    cursor:pointer;background:var(--accent,#52B8A0);color:#0E1418;}
+  #kyn-consent-banner .kyn-cb-btn.ghost{background:transparent;border:1px solid var(--border,#263139);color:var(--muted,#9CACB3);}
+</style>
+<script>
+(function(){
+  var API='/api/collect', CKEY='kyn-consent', SKEY='kyn-sid';
+  function getConsent(){ try{ return localStorage.getItem(CKEY); }catch(e){ return null; } }
+  function setConsent(v){ try{ localStorage.setItem(CKEY,v); }catch(e){} }
+  function sid(){
+    try{ var s=localStorage.getItem(SKEY);
+      if(!s){ s=Date.now().toString(36)+Math.random().toString(36).slice(2,10); localStorage.setItem(SKEY,s); }
+      return s;
+    }catch(e){ return null; }
+  }
+  function device(){ var w=window.innerWidth||screen.width, ua=navigator.userAgent||'';
+    if(/Tablet|iPad/i.test(ua)) return 'tablet';
+    if(/Mobi|Android|iPhone/i.test(ua)||w<768) return 'mobile';
+    return 'desktop'; }
+  function browser(){ var ua=navigator.userAgent||'';
+    if(/Edg\//.test(ua))return'Edge'; if(/OPR\//.test(ua))return'Opera';
+    if(/Chrome\//.test(ua))return'Chrome'; if(/Firefox\//.test(ua))return'Firefox';
+    if(/Safari\//.test(ua))return'Safari'; return'Other'; }
+  function os(){ var ua=navigator.userAgent||'';
+    if(/iPhone|iPad|iPod/.test(ua))return'iOS'; if(/Android/.test(ua))return'Android';
+    if(/Windows/.test(ua))return'Windows'; if(/Mac OS X/.test(ua))return'macOS';
+    if(/Linux/.test(ua))return'Linux'; return'Other'; }
+  var utm={}; try{ var q=new URLSearchParams(location.search);
+    ['source','medium','campaign'].forEach(function(k){ var v=q.get('utm_'+k); if(v) utm[k]=v; }); }catch(e){}
+  function base(){ return {
+    sid:sid(), path:location.pathname, referrer:document.referrer||null,
+    device:device(), browser:browser(), os:os(),
+    screen_w:screen.width, screen_h:screen.height, viewport_w:window.innerWidth, viewport_h:window.innerHeight,
+    lang:navigator.language||null,
+    tz:(window.Intl&&Intl.DateTimeFormat)?Intl.DateTimeFormat().resolvedOptions().timeZone:null,
+    utm_source:utm.source||null, utm_medium:utm.medium||null, utm_campaign:utm.campaign||null }; }
+  function track(event, props){
+    if(getConsent()!=='granted') return;
+    try{
+      var payload=base(); payload.event=event; if(props) payload.props=props;
+      var body=JSON.stringify(payload);
+      if(navigator.sendBeacon){ navigator.sendBeacon(API, new Blob([body],{type:'application/json'})); }
+      else{ fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:body,keepalive:true}); }
+    }catch(e){}
+  }
+  window.kynTrack=track;
+
+  // ---- event hooks (safe to attach always; track() no-ops without consent) ----
+  function byId(id){ return document.getElementById(id); }
+  function val(id){ var e=byId(id); return e?e.value:null; }
+  function currentView(){ var t=byId('viewToggle'); if(!t) return null;
+    var a=t.querySelector('button.active,[aria-selected="true"]'); return a?a.getAttribute('data-view'):null; }
+  function calcSnapshot(){ return {
+    product:val('productType'), cigs:val('cigs'), months:val('months'),
+    drinks:val('drinks'), alcMonths:val('alcMonths'), years:val('years'),
+    focus:val('focusCondition'), view:currentView() }; }
+  var calcT=null;
+  function queueCalc(){ if(calcT) clearTimeout(calcT); calcT=setTimeout(function(){ track('calc', calcSnapshot()); }, 1600); }
+  ['cigs','months','drinks','alcMonths','years','productType','focusCondition'].forEach(function(id){
+    var e=byId(id); if(e){ e.addEventListener('change', queueCalc); e.addEventListener('input', queueCalc); } });
+  var pr=byId('presets'); if(pr) pr.addEventListener('click', function(ev){
+    var b=ev.target.closest('.preset-chip'); if(b) track('preset',{preset:b.getAttribute('data-preset')}); });
+  var vt=byId('viewToggle'); if(vt) vt.addEventListener('click', function(ev){
+    var b=ev.target.closest('button[data-view]'); if(b) track('view',{view:b.getAttribute('data-view')}); });
+  var th=byId('themeToggle'); if(th) th.addEventListener('click', function(){
+    track('theme',{theme:document.documentElement.getAttribute('data-theme')}); });
+  [['btnDownload','download'],['btnShare','share'],['btnShareMobile','share'],
+   ['btnCopyLink','copy'],['btnCopyLinkMobile','copy']].forEach(function(p){
+    var e=byId(p[0]); if(e) e.addEventListener('click', function(){ track(p[1], calcSnapshot()); }); });
+  document.addEventListener('click', function(ev){
+    var a=ev.target.closest&&ev.target.closest('a[href]'); if(!a) return;
+    var href=a.getAttribute('href')||'';
+    if(/^https?:\/\//i.test(href) && a.host!==location.host){ track('outbound',{href:href.slice(0,200)}); } });
+
+  // ---- consent banner (opt-in: nothing is sent until the user chooses OK) ----
+  function startTracking(){ track('pageview'); }
+  function removeBanner(){ var b=byId('kyn-consent-banner'); if(b&&b.parentNode) b.parentNode.removeChild(b); }
+  function showBanner(){
+    if(byId('kyn-consent-banner')) return;
+    var wrap=document.createElement('div'); wrap.id='kyn-consent-banner';
+    wrap.setAttribute('role','dialog'); wrap.setAttribute('aria-label','Analytics consent');
+    wrap.innerHTML='<div class="kyn-cb-inner"><div class="kyn-cb-text">'+
+      'We use privacy-friendly, first-party analytics to see how this tool gets used and make it better. '+
+      'No names, no accounts, and we never sell your data. <a href="/privacy.html">How this works.</a>'+
+      '</div><div class="kyn-cb-btns">'+
+      '<button type="button" id="kyn-cb-no" class="kyn-cb-btn ghost">No thanks</button>'+
+      '<button type="button" id="kyn-cb-yes" class="kyn-cb-btn">OK</button>'+
+      '</div></div>';
+    document.body.appendChild(wrap);
+    byId('kyn-cb-yes').addEventListener('click', function(){ setConsent('granted'); removeBanner(); startTracking(); });
+    byId('kyn-cb-no').addEventListener('click', function(){ setConsent('denied'); removeBanner(); });
+  }
+  var c=getConsent();
+  if(c==='granted'){ startTracking(); }
+  else if(c!=='denied'){
+    if(document.readyState!=='loading') showBanner();
+    else document.addEventListener('DOMContentLoaded', showBanner);
+  }
+})();
+</script>
 </body>
 </html>

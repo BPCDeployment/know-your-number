@@ -1,0 +1,13 @@
+{
+  "name": "know-your-number",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Know Your Number risk calculator, with first-party analytics endpoint",
+  "type": "module",
+  "scripts": {
+    "init-db": "node scripts/init-db.mjs"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0"
+  }
+}
