@@ -768,7 +768,7 @@
       <h5>The vaping model, specifically</h5>
       <p>Vaping is modeled with its own dedicated curves, not just a scaled-down cigarette curve, built from two separate evidence bases:</p>
       <ul>
-        <li><strong>Cardiovascular risk</strong> is calibrated directly to real population studies, not biomarkers. A 2019 analysis of the federally funded PATH study (<em>J Am Heart Assoc</em>) found some-day e-cigarette use carried an adjusted odds ratio of 1.99 for having had a myocardial infarction, and every-day use 2.25, independent of cigarette smoking, with reverse causality ruled out via longitudinal follow-up. A 2025 network meta-analysis of 11 adult population studies found a pooled composite cardiovascular disease odds ratio of 1.31 for e-cigarette use. This tool's vaping heart-disease curve is fit directly through the PATH anchors; stroke is modeled at half that curve's excess, since the one dataset examining vaping and stroke specifically found a weaker, non-significant association (adjusted OR 1.13) than for MI.</li>
+        <li><strong>Cardiovascular risk</strong> is calibrated to pooled population data, not biomarkers. The curve is anchored to recent meta-analyses rather than any single study: a 2024–2025 network meta-analysis of 11 adult population studies found a pooled composite cardiovascular disease odds ratio of about 1.31 for e-cigarette use, and separate pooled estimates put the myocardial-infarction odds ratio at roughly 1.24–1.53 after adjusting for cigarette smoking. This tool sets every-day vaping heart-disease risk at about 1.5× and scales it down for less-frequent use. An earlier, widely-cited 2019 cross-sectional analysis of the PATH study reported higher figures (MI odds ratios of 1.99 some-day and 2.25 every-day), but that design is prone to reverse causation and sits above the pooled evidence, so it is treated here as an upper reference, not the anchor. Stroke is modeled at half the heart-disease excess (about 1.25× for every-day use), consistent with the one dataset examining vaping and stroke specifically finding a weaker, non-significant association (adjusted OR 1.13).</li>
         <li><strong>Cancer risk has no human incidence data yet</strong>: e-cigarettes haven't existed long enough for the decades-long latency most cancers require. This tool <strong>projects</strong> a cancer contribution from biomarker studies instead: NNAL (a tobacco-specific carcinogen metabolite) runs about 85–98% lower in exclusive e-cigarette users than in cigarette smokers across several independent studies. This tool scales vaping's contribution to roughly 10% of an equivalent cigarette's cancer-risk curve: a projection from exposure data, not a validated cancer-risk finding, and labeled as one throughout.</li>
       </ul>
       <div class="callout-inline">
@@ -793,7 +793,7 @@
         <tbody>
           <tr><td>Regular / light / menthol cigarettes</td><td class="num">1.0×</td><td>Standard cigarette dose-response curve</td></tr>
           <tr><td>IQOS / heated tobacco</td><td class="num">0.85×</td><td>Standard cigarette curve, scaled 0.85× (FDA: exposure-reduction claim allowed, disease-risk claim barred)</td></tr>
-          <tr><td>Vaping (e-cigarettes)</td><td class="num">~0.10× (projected)</td><td>Dedicated curve calibrated to PATH study odds ratios</td></tr>
+          <tr><td>Vaping (e-cigarettes)</td><td class="num">~0.10× (projected)</td><td>Dedicated curve anchored to pooled meta-analytic e-cig CVD odds ratios (~1.3-1.5)</td></tr>
         </tbody>
       </table>
 
@@ -869,7 +869,7 @@
       note:"Modeled same as regular: no strong evidence of a different per-cigarette cancer/heart risk.",
       cigsLabel:"Cigarettes per day", lifetimeLabel:"Lifetime cigarettes"},
     vape: {label:"Vaping (e-cigarettes)", cancerMult:0.10, cvdType:'vape', cvdMult:null,
-      note:"Cancer multiplier is a projection from carcinogen-biomarker studies (~85–98% lower NNAL than smokers), not validated incidence data. Cardiovascular curve is calibrated directly to PATH study odds ratios.",
+      note:"Cancer multiplier is a projection from carcinogen-biomarker studies (~85–98% lower NNAL than smokers), not validated incidence data. Cardiovascular curve is anchored to pooled meta-analytic e-cigarette odds ratios (~1.3-1.5), not the older single-study PATH figures.",
       cigsLabel:"Cig-equivalent vape sessions/day", lifetimeLabel:"Lifetime vape sessions"},
     iqos: {label:"IQOS / heated tobacco", cancerMult:0.85, cvdType:'cigarette', cvdMult:0.85,
       note:"FDA allows an exposure-reduction claim but bars a disease-risk-reduction claim, so this is modeled only modestly lower than regular cigarettes.",
@@ -935,7 +935,10 @@
   }
   function chdRR(dose){ if(dose<=0) return 1; return 1 + 2.11 * Math.pow(dose/20, 0.261); }
   function strokeRR(dose){ if(dose<=0) return 1; return 1 + 0.99 * Math.pow(dose/20, 0.319); }
-  function vapeFreqBase(months){ return 1.25 * Math.pow(months/12, 0.3365); }
+  // Every-day vaping heart-disease excess is anchored at 0.5 (RR ~1.5), centered on the
+  // pooled meta-analytic e-cig CVD estimates (composite OR ~1.31; MI OR ~1.24-1.53 adjusted),
+  // not the older single cross-sectional PATH OR of 2.25 (kept only as an upper reference).
+  function vapeFreqBase(months){ return 0.5 * Math.pow(months/12, 0.3365); }
   function vapeAmountFactor(cigsEquiv){ return Math.pow(Math.max(cigsEquiv,0.01)/10, 0.15); }
   function vapeHeartRR(months, cigsEquiv){
     if(months<=0 || cigsEquiv<=0) return 1;
