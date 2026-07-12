@@ -8,6 +8,7 @@
     "init-db": "node scripts/init-db.mjs"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.1.0"
+    "@neondatabase/serverless": "^1.1.0",
+    "@vercel/og": "^0.11.1"
   }
 }

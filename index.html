@@ -1347,15 +1347,31 @@
     }
   }
 
-  async function copyChallenge(){
-    updateURL();
+  function buildStateParams(){
+    const p = new URLSearchParams();
+    p.set('c', els.cigs.value); p.set('m', els.months.value);
+    p.set('d', els.drinks.value); p.set('am', els.alcMonths.value);
+    p.set('y', els.years.value); p.set('p', els.productType.value);
+    p.set('f', els.focusCondition.value); p.set('v', currentView);
+    return p;
+  }
+  // Share links route through /api/share, which serves a per-score preview image
+  // to crawlers then redirects real visitors into the app.
+  function shareUrl(includeChallenge){
     const score = lastScoreData.score;
-    let link;
-    try{
-      const u = new URL(location.href);
-      u.searchParams.set('chal','1'); u.searchParams.set('cs', String(score));
-      link = u.toString();
-    }catch(e){ link = location.href; }
+    const cond = lastScoreData.cond;
+    const w = cond ? (fmt(lastScoreData.rr) + ' ' + cond.label.replace(/\s*\(.*\)/,'')) : '';
+    const p = buildStateParams();
+    p.set('s', String(score));
+    if(w) p.set('w', w);
+    if(includeChallenge){ p.set('cs', String(score)); p.set('chal','1'); }
+    try{ return location.origin + '/api/share?' + p.toString(); }
+    catch(e){ return location.href; }
+  }
+
+  async function copyChallenge(){
+    const score = lastScoreData.score;
+    const link = shareUrl(true);
     try{ await navigator.clipboard.writeText(link); toast('Challenge link copied ✓ Send it to a mate and see if they can beat '+score+'.'); }
     catch(e){ toast('Could not copy. Copy the URL from your address bar.'); }
     if(window.kynTrack){ try{ kynTrack('share', {kind:'challenge', score}); }catch(e){} }
@@ -1569,8 +1585,8 @@
   });
 
   async function doShare(){
-    const url = location.href;
-    const text = 'Check out my number:';
+    const url = shareUrl(false);
+    const text = 'My number is ' + lastScoreData.score + '. What\'s yours?';
     try{
       const blob = await getShareBlob();
       const file = blob ? new File([blob], 'know-your-number.png', {type:'image/png'}) : null;
@@ -1594,7 +1610,7 @@
   document.getElementById('btnShareMobile').addEventListener('click', doShare);
 
   async function copyLink(){
-    try{ await navigator.clipboard.writeText(location.href); toast('Link copied ✓'); }
+    try{ await navigator.clipboard.writeText(shareUrl(false)); toast('Link copied ✓'); }
     catch(e){ toast('Could not copy. Long-press the address bar instead.'); }
   }
   document.getElementById('btnCopyLink').addEventListener('click', copyLink);
