@@ -462,6 +462,20 @@
   .mobilebar{backdrop-filter:blur(10px);background:color-mix(in srgb, var(--surface) 82%, transparent);}
   .mobilebar .btn-primary{box-shadow:0 6px 20px -8px rgba(43,212,168,.8);}
 
+  /* ===== CO-FACTORS EXPANDER ===== */
+  .cofactors{margin-top:20px;border-top:1px dashed var(--border);padding-top:6px;}
+  .cofactors summary{cursor:pointer;list-style:none;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.08em;color:var(--accent);padding:8px 0;display:flex;align-items:center;gap:8px;}
+  .cofactors summary::-webkit-details-marker{display:none;}
+  .cofactors summary::before{content:"+";font-size:15px;line-height:1;}
+  .cofactors[open] summary::before{content:"–";}
+  .cofactors .cf-opt{color:var(--faint);font-weight:600;text-transform:none;letter-spacing:0;}
+  .cf-body{padding-top:6px;}
+  .cf-intro{font-size:12.5px;color:var(--muted);margin:0 0 16px;}
+  .cf-checks{display:flex;flex-direction:column;gap:11px;margin-top:4px;}
+  .cf-check{display:flex;align-items:flex-start;gap:9px;font-size:13px;font-weight:500;color:var(--ink);cursor:pointer;line-height:1.35;}
+  .cf-check input{margin-top:2px;accent-color:var(--accent);width:16px;height:16px;flex:0 0 auto;}
+
   /* ===== ANIMATIONS ===== */
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
   @keyframes pulseDot{0%,100%{box-shadow:0 0 0 3px rgba(43,212,168,.18);}50%{box-shadow:0 0 0 7px rgba(43,212,168,0);}}
@@ -571,6 +585,31 @@
         <div class="row"><span id="lifetimeCigsLabel">Lifetime cigarettes</span><span class="num" id="lifetimeCigs">0</span></div>
         <div class="row"><span>Lifetime drinks</span><span class="num" id="lifetimeDrinks">0</span></div>
       </div>
+
+      <details class="cofactors" id="cofactors">
+        <summary>Refine my number <span class="cf-opt">optional</span></summary>
+        <div class="cf-body">
+          <p class="cf-intro">These aren't smoking or drinking, but they move your baseline risk. Leave them be to keep the number about your habits only.</p>
+          <div class="field">
+            <label for="bmi">Body-mass index (BMI) <span class="val" id="bmiVal">24</span></label>
+            <input type="range" id="bmi" min="16" max="45" value="24" step="1">
+            <div class="scale-labels"><span>16</span><span>30</span><span>45</span></div>
+          </div>
+          <div class="field">
+            <label for="bp">Blood pressure</label>
+            <select id="bp">
+              <option value="normal">Normal / not sure</option>
+              <option value="elevated">Elevated (120–139)</option>
+              <option value="high">High (140+)</option>
+            </select>
+          </div>
+          <div class="cf-checks">
+            <label class="cf-check"><input type="checkbox" id="famCancer"> Cancer in a parent or sibling</label>
+            <label class="cf-check"><input type="checkbox" id="famCvd"> Heart disease or stroke in a parent or sibling</label>
+            <label class="cf-check"><input type="checkbox" id="hpv"> HPV-positive (raises throat-cancer risk on its own)</label>
+          </div>
+        </div>
+      </details>
     </div>
 
     <div class="results">
@@ -925,6 +964,12 @@
     ysqVal: document.getElementById('ysqVal'),
     quitField: document.getElementById('quitField'),
     quitNote: document.getElementById('quitNote'),
+    bmi: document.getElementById('bmi'),
+    bmiVal: document.getElementById('bmiVal'),
+    bp: document.getElementById('bp'),
+    famCancer: document.getElementById('famCancer'),
+    famCvd: document.getElementById('famCvd'),
+    hpv: document.getElementById('hpv'),
     focusCondition: document.getElementById('focusCondition'),
     heroDot: document.getElementById('heroDot'),
     heroLabel: document.getElementById('heroLabel'),
@@ -948,6 +993,9 @@
   let currentView = 'cancer';
   let usageStatus = 'current';  // 'current' | 'former'
   let yearsSinceQuit = 0;
+  // co-factors (default = no effect until the user opts in)
+  let bmi = 24, bpLevel = 'normal', famCancer = false, famCvd = false, hpvPos = false;
+  const HPV_RR = 9; // HPV-positive oropharyngeal risk, a parallel pathway (D'Souza NEJM 2007)
 
   // ---- risk model (unchanged from validated version) ----
   function cancerCeilingRR(ceiling, packYears){
@@ -1036,12 +1084,35 @@
     }
     return (usageStatus==='former' && yearsSinceQuit>0) ? withDecay(rr, smokeDecayFrac(cond, yearsSinceQuit)) : rr;
   }
+  // Optional co-factor multipliers (independent of smoking/alcohol; each ≈1.0 by default).
+  // BMI per 5 kg/m² over a reference of 24, site-specific (Renehan Lancet 2008); note it drives
+  // oesophageal ADENOcarcinoma not the squamous cell modelled here, so it is not applied to it.
+  function coFactorRR(cond){
+    let rr = 1;
+    const isCvd = (cond.kind==='heart' || cond.kind==='stroke');
+    if(bmi && bmi !== 24){
+      const per5 = { colorectal:0.24, kidney:0.30, liver:0.24, pancreas:0.10, breast:0.12, heart:0.27, stroke:0.20 };
+      const key = isCvd ? cond.kind : cond.key;
+      const slope = per5[key];
+      if(slope){ const units = (bmi-24)/5; rr *= Math.max(0.4, Math.pow(1+slope, units)); }
+    }
+    if(isCvd && bpLevel && bpLevel!=='normal'){ rr *= (bpLevel==='high' ? 2.0 : 1.4); } // PSC/Lewington Lancet 2002
+    if(famCancer && cond.kind==='cancer') rr *= 1.4; // generic first-degree family history (Lancet metas)
+    if(famCvd && isCvd) rr *= 1.5;
+    return rr;
+  }
   function combinedRR(cond, cigs, months, drinks, alcMonths, years, product){
-    if(cond.kind==='heart' || cond.kind==='stroke') return cvdComponent(cond, cigs, months, product);
+    if(cond.kind==='heart' || cond.kind==='stroke'){
+      return cvdComponent(cond, cigs, months, product) * coFactorRR(cond);
+    }
     const s = smokingComponent(cond, cigs, months, years, product);
     const a = alcoholComponent(cond, drinks, alcMonths);
     let rr = s * a;
     if(cond.syn && s>1 && a>1) rr *= SYNERGY; // greater-than-multiplicative synergy, shared UADT cancers
+    rr *= coFactorRR(cond);
+    // HPV is a distinct causal pathway for oropharyngeal (throat) cancer, not a multiplier on
+    // smoking/alcohol — add it as an independent parallel channel (excess on top).
+    if(cond.key==='pharynx' && hpvPos) rr += (HPV_RR - 1);
     return rr;
   }
   function fmt(x){ return x.toFixed(1) + '×'; }
@@ -1253,6 +1324,7 @@
       p.set('y', els.years.value); p.set('p', els.productType.value);
       p.set('f', els.focusCondition.value); p.set('v', currentView);
       if(usageStatus==='former'){ p.set('u','f'); p.set('q', els.ysq.value); }
+      addCoFactorParams(p);
       history.replaceState(null, '', '?' + p.toString());
     }catch(e){}
   }
@@ -1426,7 +1498,15 @@
     p.set('y', els.years.value); p.set('p', els.productType.value);
     p.set('f', els.focusCondition.value); p.set('v', currentView);
     if(usageStatus==='former'){ p.set('u','f'); p.set('q', els.ysq.value); }
+    addCoFactorParams(p);
     return p;
+  }
+  function addCoFactorParams(p){
+    if(bmi !== 24) p.set('bmi', String(bmi));
+    if(bpLevel !== 'normal') p.set('bp', bpLevel);
+    if(famCancer) p.set('fc', '1');
+    if(famCvd) p.set('fv', '1');
+    if(hpvPos) p.set('hp', '1');
   }
   // Share links route through /api/share, which serves a per-score preview image
   // to crawlers then redirects real visitors into the app.
@@ -1454,6 +1534,13 @@
     yearsSinceQuit = (usageStatus==='former') ? (parseInt(els.ysq.value,10)||0) : 0;
     els.quitField.style.display = (usageStatus==='former') ? '' : 'none';
     els.ysqVal.textContent = yearsSinceQuit;
+    // co-factor sync
+    bmi = parseInt(els.bmi.value,10)||24;
+    bpLevel = els.bp.value;
+    famCancer = els.famCancer.checked;
+    famCvd = els.famCvd.checked;
+    hpvPos = els.hpv.checked;
+    els.bmiVal.textContent = bmi;
     if(usageStatus==='former'){
       els.quitNote.textContent = yearsSinceQuit===0
         ? 'Set how long ago you stopped. Risk starts unwinding the day you quit.'
@@ -1552,6 +1639,12 @@
     chartAnimate = true;
     update();
     if(window.kynTrack){ try{ kynTrack('view', {usage:usageStatus}); }catch(e){} }
+  });
+  // ---- co-factors ----
+  els.bmi.addEventListener('input', update);
+  [els.bp, els.famCancer, els.famCvd, els.hpv].forEach(el=>{
+    el.addEventListener('change', ()=>{ chartAnimate = true; update();
+      if(window.kynTrack){ try{ kynTrack('view', {cofactor:el.id}); }catch(e){} } });
   });
   ['input','change'].forEach(evt=>{
     [els.cigs, els.months, els.drinks, els.alcMonths, els.years, els.ysq].forEach(el=>{
@@ -1733,6 +1826,12 @@
       if(p.has('p') && productData[p.get('p')]) els.productType.value = p.get('p');
       if(p.has('v')){ currentView = p.get('v')==='all' ? 'all' : 'cancer'; }
       if(p.get('u')==='f'){ usageStatus = 'former'; if(p.has('q')) els.ysq.value = p.get('q'); }
+      if(p.has('bmi')) els.bmi.value = p.get('bmi');
+      if(p.has('bp')) els.bp.value = p.get('bp');
+      if(p.get('fc')==='1') els.famCancer.checked = true;
+      if(p.get('fv')==='1') els.famCvd.checked = true;
+      if(p.get('hp')==='1') els.hpv.checked = true;
+      if(p.has('bmi')||p.has('bp')||p.has('fc')||p.has('fv')||p.has('hp')){ const cf=document.getElementById('cofactors'); if(cf) cf.open = true; }
       if(p.has('c')||p.has('m')||p.has('d')) clearPresetActive();
       if(p.has('chal') && p.has('cs')){
         const cs = parseInt(p.get('cs'),10);
