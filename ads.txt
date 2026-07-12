@@ -1,5 +1,2 @@
-# Replace pub-XXXXXXXXXXXXXXXX below with your real AdSense publisher ID
-# (found in AdSense under Account > Settings > Account information).
-# This file MUST be placed at the root of your domain, e.g. https://yourdomain.com/ads.txt
-# (not in a subfolder), or AdSense will flag it as missing.
-google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+# AdSense authorized sellers file for knowyournumber.io. Served at the domain root.
+google.com, pub-4697279255367980, DIRECT, f08c47fec0942fa0
