@@ -15,28 +15,26 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=60');
   if (!sql) { res.status(503).json({ error: 'db_not_configured' }); return; }
   try {
+    // Counts are of visits (page views), so every visitor is counted, not only
+    // those who opted into deeper logging.
     const [totals] = await sql`
-      select count(*)::int as events,
-             count(distinct sid)::int as people,
-             count(distinct country)::int as countries
+      select count(*) filter (where event='pageview')::int as visits,
+             count(distinct country) filter (where event='pageview' and country is not null and country <> '')::int as countries,
+             count(*) filter (where event='calc')::int as runs
       from events`;
     const byCountry = await sql`
-      select country, count(distinct sid)::int as n
-      from events where country is not null and country <> ''
+      select country, count(*)::int as n
+      from events where event='pageview' and country is not null and country <> ''
       group by country order by n desc, country`;
     const byCity = await sql`
-      select city, region, country, count(distinct sid)::int as n
-      from events where city is not null and city <> ''
+      select city, region, country, count(*)::int as n
+      from events where event='pageview' and city is not null and city <> ''
       group by city, region, country order by n desc, city limit 25`;
     const byRef = await sql`
-      select referrer, count(distinct sid)::int as n
-      from events where referrer is not null and referrer <> ''
+      select referrer, count(*)::int as n
+      from events where event='pageview' and referrer is not null and referrer <> ''
       group by referrer order by n desc limit 20`;
-    const calcRuns = await sql`select count(*)::int as n from events where event='calc'`;
-    res.status(200).json({
-      totals: { ...totals, runs: (calcRuns[0] && calcRuns[0].n) || 0 },
-      byCountry, byCity, byRef,
-    });
+    res.status(200).json({ totals, byCountry, byCity, byRef });
   } catch (e) {
     res.status(500).json({ error: 'db_error' });
   }
