@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Know Your Number: Smoking, Vaping &amp; Alcohol Risk, Straight Up</title>
+<meta name="description" content="See what smoking, vaping, and drinking actually add up to: a real, evidence-based risk calculator built for how people actually use these, not textbook averages. Free, shareable, no judgment.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#12181D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Know Your Number">
+<meta property="og:description" content="The real math behind smoking, vaping, and drinking: see what your habits actually add up to.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2352B8A0'/%3E%3Cpath d='M14 40 L26 28 L34 36 L50 18' stroke='%230E1418' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<!--
+  GOOGLE ADSENSE: AUTO ADS (fastest setup: one script, Google auto-places ad units)
+  1. Sign up at https://adsense.google.com with the domain this file is deployed to.
+  2. Once you have a publisher ID, replace BOTH occurrences of "ca-pub-XXXXXXXXXXXXXXXX" in this
+     file (here, and in the two manual ad slots below) with your real ID.
+  3. Also update /ads.txt at your domain root with the same ID (file included alongside this one).
+  4. After approval, in AdSense go to Blocking controls → Ad category blocking, and block
+     "Alcohol" (and review "Dating" / other categories) given this site's under-18 reach. Do this
+     before ads go live, not after.
+  Until you swap in a real ID, this script will simply fail silently (no ads shown, no page break).
+-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+<style>
+  :root{
+    --bg:#F5F7F8; --surface:#FFFFFF; --border:#DCE3E7; --ink:#12181D; --muted:#57666D; --faint:#94A3AA;
+    --lung:#2E7D6B; --lung-soft:#DFEEE9; --lung-line:#22604F;
+    --wine:#B85C7D; --wine-soft:#F7E9EE;
+    --vape:#3E8FB0; --vape-soft:#E1EFF4;
+    --heart:#E0594B; --heart-soft:#FCE7E3;
+    --stroke-c:#E0A339; --stroke-soft:#FBEFDA;
+    --callout-bg:#FFF3DC; --callout-border:#F0D9A3;
+    --synergy-bg:#FBEAF0; --synergy-border:#F0CBD9;
+    --vapenote-bg:#E1F0EC; --vapenote-border:#B7DBD0;
+    --accent:#52B8A0; --accent-ink:#0E1418;
+    --radius:14px; --radius-sm:9px;
+  }
+  html[data-theme="dark"]{
+    --bg:#0E1418; --surface:#161E23; --border:#263139; --ink:#EAF1F2; --muted:#9CACB3; --faint:#647178;
+    --lung:#52B8A0; --lung-soft:#173229; --lung-line:#7BD1BC;
+    --wine:#E38DAA; --wine-soft:#301E27;
+    --vape:#6FC4E3; --vape-soft:#132A32;
+    --heart:#F0796A; --heart-soft:#301A17;
+    --stroke-c:#F0C066; --stroke-soft:#2E2412;
+    --callout-bg:#2A2312; --callout-border:#4A3D1B;
+    --synergy-bg:#2A1A21; --synergy-border:#4A2C37;
+    --vapenote-bg:#122824; --vapenote-border:#204D42;
+    --accent:#52B8A0; --accent-ink:#0E1418;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .2s,color .2s;}
+  a{color:var(--lung);}
+  .disp{font-family:'Space Grotesk',sans-serif;}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px 16px 90px;}
+  @media (min-width:640px){ .wrap{padding:36px 20px 60px;} }
+
+  .sitebar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+  .brand{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--ink);letter-spacing:0.01em;}
+  .brand .mark{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;}
+  .sitebar .right{display:flex;align-items:center;gap:10px;}
+  .themebtn{
+    width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--surface);
+    color:var(--ink);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  }
+  .themebtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  header.top{margin-bottom:14px;}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin:0 0 8px;}
+  h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(32px,9vw,52px);margin:0 0 10px;letter-spacing:-0.02em;line-height:1.02;}
+  .subtitle{font-size:16px;color:var(--muted);max-width:60ch;margin:0;}
+
+  .callout{background:var(--callout-bg);border:1px solid var(--callout-border);border-radius:var(--radius);padding:14px 16px;margin:16px 0;font-size:13.5px;}
+  .callout p{margin:0 0 6px;} .callout p:last-child{margin-bottom:0;} .callout strong{color:var(--ink);}
+
+  .vapenote{background:var(--vapenote-bg);border:1px solid var(--vapenote-border);border-radius:var(--radius);padding:12px 16px;margin:0 0 16px;font-size:13px;display:none;gap:10px;align-items:flex-start;}
+  .vapenote.show{display:flex;}
+  .vapenote .ico{color:var(--vape);font-weight:700;font-family:'JetBrains Mono',monospace;}
+  .vapenote strong{color:var(--vape);}
+
+  /* Presets */
+  .presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+  .preset-chip{
+    font-family:'Inter',sans-serif;font-weight:600;font-size:13px;padding:9px 15px;border-radius:999px;
+    border:1.5px solid var(--border);background:var(--surface);color:var(--ink);cursor:pointer;
+  }
+  .preset-chip:active{transform:scale(0.97);}
+  .preset-chip.active{border-color:var(--accent);background:var(--lung-soft);color:var(--lung-line);}
+
+  .grid{display:grid;grid-template-columns:1fr;gap:16px;}
+  @media (min-width:900px){ .grid{grid-template-columns:300px 1fr;align-items:start;} }
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
+
+  .controls .subhead{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--faint);margin:0 0 12px;padding-top:16px;border-top:1px dashed var(--border);}
+  .controls .subhead:first-child{padding-top:0;border-top:none;}
+  .controls .field{margin-bottom:20px;} .controls .field:last-child{margin-bottom:0;}
+  .controls label{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;font-weight:600;margin-bottom:10px;gap:8px;}
+  .controls label span.val{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--lung);font-size:14px;white-space:nowrap;}
+  .controls.alcgroup label span.val{color:var(--wine);}
+  select, input[type=range]{width:100%;}
+  select{font-family:'Inter',sans-serif;font-size:15px;padding:12px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--ink);}
+  input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:var(--border);outline:none;padding:0;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--lung);border:3px solid var(--surface);box-shadow:0 0 0 1.5px var(--lung);cursor:pointer;}
+  input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--lung);border:3px solid var(--surface);box-shadow:0 0 0 1.5px var(--lung);cursor:pointer;}
+  input.alc-range::-webkit-slider-thumb{background:var(--wine);box-shadow:0 0 0 1.5px var(--wine);}
+  input.alc-range::-moz-range-thumb{background:var(--wine);box-shadow:0 0 0 1.5px var(--wine);}
+  input.vape-active::-webkit-slider-thumb{background:var(--vape);box-shadow:0 0 0 1.5px var(--vape);}
+  input.vape-active::-moz-range-thumb{background:var(--vape);box-shadow:0 0 0 1.5px var(--vape);}
+  input:focus-visible, select:focus-visible, button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .footnote{font-size:12.5px;color:var(--muted);margin:8px 0 0;}
+  .scale-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--faint);margin-top:6px;font-family:'JetBrains Mono',monospace;}
+
+  .lifetime-count{margin-top:22px;padding-top:16px;border-top:1px dashed var(--border);font-size:13px;color:var(--muted);}
+  .lifetime-count .row{display:flex;justify-content:space-between;margin-bottom:6px;gap:8px;}
+  .lifetime-count .num{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--ink);font-weight:600;text-align:right;}
+
+  .results{display:flex;flex-direction:column;gap:16px;}
+  .view-toggle{display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:3px;gap:2px;}
+  .view-toggle button{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;border:none;background:transparent;color:var(--muted);padding:8px 15px;border-radius:8px;cursor:pointer;}
+  .view-toggle button.active{background:var(--surface);color:var(--lung);box-shadow:0 1px 2px rgba(0,0,0,0.12);}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;}
+  .focus-select{display:flex;align-items:center;gap:8px;flex:1;min-width:220px;}
+  .focus-select label{font-size:12.5px;font-weight:600;color:var(--muted);white-space:nowrap;}
+  .focus-select select{min-width:0;flex:1;padding:9px 9px;font-size:13.5px;}
+
+  .hero-card{border-radius:var(--radius);padding:22px;border:1px solid var(--border);background:linear-gradient(155deg,var(--lung-soft),var(--surface) 60%);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;}
+  .hero-card .left{min-width:220px;}
+  .hero-card .metric-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--lung);display:flex;align-items:center;gap:6px;}
+  .hero-card .dot{width:9px;height:9px;border-radius:50%;background:var(--lung);display:inline-block;}
+  .hero-card .big{font-family:'Space Grotesk',sans-serif;font-size:clamp(40px,10vw,54px);font-weight:700;margin:6px 0 2px;color:var(--ink);letter-spacing:-0.02em;}
+  .hero-card .sub{font-size:12.5px;color:var(--muted);max-width:34ch;}
+  .compare{display:flex;gap:18px;flex-wrap:wrap;}
+  .compare .ccard{min-width:120px;}
+  .compare .ccard h4{margin:0 0 6px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;}
+  .compare .ccard .v{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--ink);}
+
+  /* Share panel */
+  .share-panel{border-radius:var(--radius);padding:18px;border:1px solid var(--border);background:var(--surface);}
+  .share-panel h3{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16.5px;margin:0 0 4px;}
+  .share-panel .sub{font-size:13px;color:var(--muted);margin:0 0 14px;}
+  .share-actions{display:flex;gap:10px;flex-wrap:wrap;}
+  .btn{
+    font-family:'Inter',sans-serif;font-weight:700;font-size:13.5px;padding:11px 18px;border-radius:999px;
+    border:none;cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+  }
+  .btn-primary{background:var(--accent);color:var(--accent-ink);}
+  .btn-secondary{background:var(--bg);color:var(--ink);border:1.5px solid var(--border);}
+  .btn:active{transform:scale(0.97);}
+  .share-toast{font-size:12.5px;color:var(--lung);margin-top:10px;min-height:16px;}
+  #shareCanvas{display:none;}
+
+  .synergy-panel{border-radius:var(--radius);padding:18px;border:1px solid var(--synergy-border);background:var(--synergy-bg);}
+  .synergy-panel h3{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;margin:0 0 4px;}
+  .synergy-panel .sub{font-size:12.5px;color:var(--muted);margin:0 0 14px;}
+  .synergy-row{display:flex;gap:12px;flex-wrap:wrap;}
+  .synergy-stat{flex:1;min-width:130px;background:var(--surface);border:1px solid var(--synergy-border);border-radius:10px;padding:10px 12px;}
+  .synergy-stat h5{margin:0 0 4px;font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.02em;}
+  .synergy-stat .v{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--ink);}
+  .synergy-stat.actual{background:var(--wine);border-color:var(--wine);}
+  .synergy-stat.actual h5{color:#fff;opacity:.85;} .synergy-stat.actual .v{color:#fff;}
+  .synergy-note{margin-top:12px;font-size:13px;background:var(--surface);border-left:3px solid var(--wine);padding:8px 12px;border-radius:0 8px 8px 0;}
+  .synergy-note strong{color:var(--wine);}
+  .synergy-note.projection{border-left-color:var(--vape);}
+  .synergy-note.projection strong{color:var(--vape);}
+  .synergy-single{font-size:13.5px;color:var(--muted);}
+
+  .barchart-panel h3, .chart-panel h3{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16.5px;margin:0 0 2px;}
+  .barchart-panel .chart-sub, .chart-panel .chart-sub{font-size:12.5px;color:var(--muted);margin:0 0 14px;}
+  #barchart{width:100%;height:auto;display:block;} #chart{width:100%;height:auto;display:block;}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--muted);margin-top:10px;}
+  .legend .item{display:flex;align-items:center;gap:6px;}
+  .legend .swatch{width:16px;height:3px;border-radius:2px;}
+
+  /* Monetization / resource sections */
+  .money-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:20px;}
+  @media (min-width:760px){ .money-grid{grid-template-columns:1fr 1fr;} }
+  .money-card{border-radius:var(--radius);padding:18px;border:1px solid var(--border);background:var(--surface);}
+  .money-card .kicker{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--faint);margin-bottom:8px;}
+  .money-card h4{font-family:'Space Grotesk',sans-serif;font-size:16px;margin:0 0 8px;}
+  .money-card p{font-size:13.5px;color:var(--muted);margin:0 0 14px;}
+  .sponsor-strip{text-align:center;font-size:12px;color:var(--faint);padding:14px;border:1px dashed var(--border);border-radius:var(--radius-sm);margin-top:20px;}
+
+  .ad-slot{
+    margin:16px 0;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);
+    padding:6px;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    overflow:hidden;
+  }
+  .ad-slot .ad-tag{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--faint);align-self:flex-start;margin:2px 0 6px 4px;
+  }
+  .ad-slot ins.adsbygoogle{width:100%;min-height:90px;}
+  .ad-slot--leaderboard{min-height:110px;}
+  .ad-slot--incontent{min-height:250px;}
+
+  details.method{margin-top:22px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;}
+  details.method summary{cursor:pointer;font-weight:700;font-size:14px;list-style:none;font-family:'Space Grotesk',sans-serif;}
+  details.method summary::-webkit-details-marker{display:none;}
+  details.method summary::before{content:"+  ";font-family:'JetBrains Mono',monospace;color:var(--lung);}
+  details[open].method summary::before{content:"–  ";}
+  .method-body{margin-top:14px;font-size:13.5px;color:var(--ink);}
+  .method-body h5{margin:16px 0 6px;font-size:13px;}
+  .method-body h5:first-child{margin-top:0;}
+  .method-body ul{margin:0 0 10px;padding-left:18px;}
+  .method-body li{margin-bottom:5px;}
+  .method-body .src{color:var(--muted);font-size:12.5px;}
+  .method-body .callout-inline{background:var(--vapenote-bg);border:1px solid var(--vapenote-border);border-radius:8px;padding:10px 14px;margin:10px 0;}
+
+  table.datatable{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0 16px;}
+  table.datatable th, table.datatable td{text-align:left;padding:6px 10px 6px 0;border-bottom:1px solid var(--border);}
+  table.datatable th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:0.02em;}
+  table.datatable td.num{font-family:'JetBrains Mono',monospace;}
+
+  footer.disclaimer{margin-top:22px;font-size:12px;color:var(--faint);border-top:1px solid var(--border);padding-top:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+  /* Sticky mobile action bar */
+  .mobilebar{
+    position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--border);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;z-index:50;
+    box-shadow:0 -4px 16px rgba(0,0,0,0.08);
+  }
+  @media (min-width:900px){ .mobilebar{display:none;} }
+  .mobilebar .btn{flex:1;justify-content:center;}
+
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="sitebar">
+    <div class="brand"><span class="mark"></span> Know Your Number</div>
+    <div class="right">
+      <button class="themebtn" id="themeToggle" aria-label="Toggle dark mode" type="button">◐</button>
+    </div>
+  </div>
+
+  <header class="top">
+    <div class="eyebrow">The real math on smoking, vaping &amp; drinking</div>
+    <h1 class="disp">Know your<br>number.</h1>
+    <p class="subtitle">Not scare tactics. Not a lecture. Just what the actual research says your habits add up to. Tap a preset, see your number, share it if you want.</p>
+  </header>
+
+  <div class="callout">
+    <p><strong>The thing most people get wrong:</strong> cutting back doesn't cut your risk by the same amount. Someone drinking + smoking six months a year isn't at "half the risk" of doing it year-round. The gap is way smaller than that. And combining smoking or vaping with drinking doesn't add the risks together, it <em>multiplies</em> them.</p>
+  </div>
+
+  <div class="vapenote" id="vapeNote">
+    <div class="ico">!</div>
+    <div><strong>About EVALI:</strong> a 2019–2020 outbreak of serious vaping-linked lung injury (2,807 hospitalizations, 68 deaths, per the CDC) was traced almost entirely to vitamin E acetate in illicit THC vape carts, not regulated nicotine e-liquid. Real risk, tied to black-market products specifically, not something that scales with the sliders below.</div>
+  </div>
+
+  <div class="presets" id="presets">
+    <button class="preset-chip" data-preset="never">Never</button>
+    <button class="preset-chip" data-preset="social">Social / weekends</button>
+    <button class="preset-chip active" data-preset="regular">Regular</button>
+    <button class="preset-chip" data-preset="heavy">Heavy</button>
+  </div>
+
+  <div class="grid">
+    <div class="panel controls">
+      <div class="subhead">Tobacco / Vaping</div>
+      <div class="field">
+        <label for="productType">Product type</label>
+        <select id="productType">
+          <option value="regular">Regular cigarettes</option>
+          <option value="light">Light / mild cigarettes</option>
+          <option value="menthol">Menthol cigarettes</option>
+          <option value="vape">Vaping (e-cigarettes)</option>
+          <option value="iqos">IQOS / heated tobacco</option>
+        </select>
+        <p class="footnote" id="productNote"></p>
+      </div>
+      <div class="field">
+        <label for="cigs"><span id="cigsLabel">Cigarettes per day</span> <span class="val" id="cigsVal">10</span></label>
+        <input type="range" id="cigs" min="0" max="40" value="10" step="1">
+        <div class="scale-labels"><span>0</span><span>20</span><span>40</span></div>
+      </div>
+      <div class="field">
+        <label for="months"><span id="monthsLabel">Months active per year</span> <span class="val" id="monthsVal">6</span></label>
+        <input type="range" id="months" min="1" max="12" value="6" step="1">
+        <div class="scale-labels"><span>1</span><span>6</span><span>12</span></div>
+      </div>
+
+      <div class="subhead">Alcohol</div>
+      <div class="field">
+        <label for="drinks">Drinks per day <span class="val" id="drinksVal">2</span></label>
+        <input type="range" class="alc-range" id="drinks" min="0" max="10" value="2" step="1">
+        <div class="scale-labels"><span>0</span><span>5</span><span>10</span></div>
+        <p class="footnote">1 standard drink = 14g pure alcohol (beer, wine, or a shot of spirits. The type doesn't matter much; the ethanol does).</p>
+      </div>
+      <div class="field">
+        <label for="alcMonths">Months active per year <span class="val" id="alcMonthsVal">12</span></label>
+        <input type="range" class="alc-range" id="alcMonths" min="1" max="12" value="12" step="1">
+        <div class="scale-labels"><span>1</span><span>6</span><span>12</span></div>
+      </div>
+
+      <div class="subhead">Duration</div>
+      <div class="field">
+        <label for="years">Years on this pattern <span class="val" id="yearsVal">15</span></label>
+        <input type="range" id="years" min="1" max="50" value="15" step="1">
+        <div class="scale-labels"><span>1</span><span>25</span><span>50</span></div>
+      </div>
+
+      <div class="lifetime-count">
+        <div class="row"><span id="lifetimeCigsLabel">Lifetime cigarettes</span><span class="num" id="lifetimeCigs">0</span></div>
+        <div class="row"><span>Lifetime drinks</span><span class="num" id="lifetimeDrinks">0</span></div>
+      </div>
+    </div>
+
+    <div class="results">
+      <div class="toolbar">
+        <div class="view-toggle" id="viewToggle" role="tablist">
+          <button type="button" class="active" data-view="cancer" role="tab" aria-selected="true">Cancer</button>
+          <button type="button" data-view="all" role="tab" aria-selected="false">+ Heart &amp; Stroke</button>
+        </div>
+        <div class="focus-select">
+          <label for="focusCondition">Show me</label>
+          <select id="focusCondition"></select>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="left">
+          <div class="metric-label"><span class="dot" id="heroDot"></span><span id="heroLabel">Lung cancer</span></div>
+          <div class="big disp" id="heroBig">1.0×</div>
+          <div class="sub" id="heroSub">risk vs. someone who does neither</div>
+        </div>
+        <div class="compare">
+          <div class="ccard"><h4>You</h4><div class="v" id="cmpYou">–</div></div>
+          <div class="ccard"><h4>Year-round</h4><div class="v" id="cmpFull">–</div></div>
+          <div class="ccard"><h4>Neither</h4><div class="v">1.0×</div></div>
+        </div>
+      </div>
+
+      <div class="ad-slot ad-slot--leaderboard">
+        <span class="ad-tag">Advertisement</span>
+        <ins class="adsbygoogle"
+             style="display:block;width:100%;"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="0000000001"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>try{(adsbygoogle = window.adsbygoogle || []).push({});}catch(e){}</script>
+      </div>
+
+      <div class="panel share-panel">
+        <h3 class="disp">Share your number</h3>
+        <p class="sub">Download a card for your story, or copy a link that opens this exact scenario.</p>
+        <div class="share-actions">
+          <button class="btn btn-primary" id="btnDownload" type="button">⬇ Download card</button>
+          <button class="btn btn-secondary" id="btnShare" type="button">↗ Share</button>
+          <button class="btn btn-secondary" id="btnCopyLink" type="button">🔗 Copy link</button>
+        </div>
+        <div class="share-toast" id="shareToast"></div>
+      </div>
+      <canvas id="shareCanvas" width="1080" height="1350"></canvas>
+
+      <div class="panel synergy-panel" id="synergyPanel">
+        <h3 id="synergyTitle">Synergy: Lung</h3>
+        <p class="sub" id="synergySub">How your combined risk compares to simply adding the two separate risks together.</p>
+        <div id="synergyBody"></div>
+      </div>
+
+      <div class="panel barchart-panel">
+        <h3 id="barTitle">Combined risk by cancer type</h3>
+        <p class="chart-sub">Sorted highest to lowest, at your current settings.</p>
+        <svg id="barchart" viewBox="0 0 720 400" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+
+      <div class="panel chart-panel">
+        <h3>Risk over time</h3>
+        <p class="chart-sub">Solid: your pattern. Dashed: same daily amounts, all year.</p>
+        <svg id="chart" viewBox="0 0 720 300" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="legend">
+          <div class="item"><span class="swatch" style="background:var(--lung-line)"></span>Your pattern</div>
+          <div class="item"><span class="swatch" style="background:var(--lung-line);opacity:.45;border-top:2px dashed var(--lung-line)"></span>Both, year-round</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="money-grid">
+    <div class="money-card">
+      <div class="kicker">Free resource, not a revenue source</div>
+      <h4 class="disp">Actually trying to cut back?</h4>
+      <p>Truth Initiative's This is Quitting is the only US quitline built specifically for people under 25 quitting vaping or smoking: free, text-based, no lectures.</p>
+      <a class="btn btn-secondary" href="https://truthinitiative.org/thisisquitting" target="_blank" rel="noopener">Text DITCHVAPE to 88709 →</a>
+    </div>
+    <div class="money-card">
+      <div class="kicker">Keeps this free &amp; ad-light</div>
+      <h4 class="disp">Chip in</h4>
+      <p>This tool runs on no tobacco/vape/alcohol sponsorships, ever. That's a hard line. If it was useful, a one-time tip keeps it online and ad-free.</p>
+      <a class="btn btn-secondary" href="#" id="donateLink" target="_blank" rel="noopener">Support this project →</a>
+      <p class="footnote">Placeholder link. Wire up to your Ko-fi / Buy Me a Coffee / Stripe Payment Link.</p>
+    </div>
+    <div class="money-card">
+      <div class="kicker">What this tool will never do</div>
+      <h4 class="disp">No tobacco, vape, or alcohol ads. Ever.</h4>
+      <p>No selling your inputs. No targeted ads based on what you tell it. Display ads here are brand-safe, non-endemic, and category-blocked from alcohol and age-restricted products, configured at the ad-network level, not just promised in copy.</p>
+    </div>
+  </div>
+
+  <div class="ad-slot ad-slot--incontent">
+    <span class="ad-tag">Advertisement</span>
+    <ins class="adsbygoogle"
+         style="display:block;width:100%;"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="0000000002"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>try{(adsbygoogle = window.adsbygoogle || []).push({});}catch(e){}</script>
+  </div>
+
+  <details class="method">
+    <summary>How this is calculated, and where the numbers come from</summary>
+    <div class="method-body">
+
+      <h5>The vaping model, specifically</h5>
+      <p>Vaping is modeled with its own dedicated curves, not just a scaled-down cigarette curve, built from two separate evidence bases:</p>
+      <ul>
+        <li><strong>Cardiovascular risk</strong> is calibrated directly to real population studies, not biomarkers. A 2019 analysis of the federally funded PATH study (<em>J Am Heart Assoc</em>) found some-day e-cigarette use carried an adjusted odds ratio of 1.99 for having had a myocardial infarction, and every-day use 2.25, independent of cigarette smoking, with reverse causality ruled out via longitudinal follow-up. A 2025 network meta-analysis of 11 adult population studies found a pooled composite cardiovascular disease odds ratio of 1.31 for e-cigarette use. This tool's vaping heart-disease curve is fit directly through the PATH anchors; stroke is modeled at half that curve's excess, since the one dataset examining vaping and stroke specifically found a weaker, non-significant association (adjusted OR 1.13) than for MI.</li>
+        <li><strong>Cancer risk has no human incidence data yet</strong>: e-cigarettes haven't existed long enough for the decades-long latency most cancers require. This tool <strong>projects</strong> a cancer contribution from biomarker studies instead: NNAL (a tobacco-specific carcinogen metabolite) runs about 85–98% lower in exclusive e-cigarette users than in cigarette smokers across several independent studies. This tool scales vaping's contribution to roughly 10% of an equivalent cigarette's cancer-risk curve: a projection from exposure data, not a validated cancer-risk finding, and labeled as one throughout.</li>
+      </ul>
+      <div class="callout-inline">
+        <strong>Why this varies so much by device:</strong> carbonyl/aldehyde output in e-cigarette aerosol has been measured anywhere from ~100–2,800× lower than cigarette smoke under normal use, to 5–15× <em>higher</em> under high-voltage "dry puff" conditions. This tool models a single central estimate; real risk for any individual device could reasonably fall outside it in either direction.
+      </div>
+      <p class="src">The often-repeated "e-cigarettes are 95% less harmful than smoking" figure traces to a 2014 UK expert-panel opinion exercise (not data-driven), popularized by a 2015 Public Health England report, and criticized in <em>The Lancet</em> for methodological weakness and conflicts of interest. This tool does not use that figure as a modeling input.</p>
+
+      <h5>Why smoking/vaping + drinking multiplies risk instead of adding it</h5>
+      <p>For cancers of the upper aerodigestive tract (mouth, throat, voice box, esophagus), alcohol acts partly as a solvent: it helps dissolve carcinogens and makes it easier for them to penetrate the cells lining the mouth and throat. The U.S. National Cancer Institute describes the combined harm at these sites as <em>multiplicative</em>. A 2024 meta-analysis (Jun et al., <em>J Korean Med Sci</em>) measured this directly for cigarettes and alcohol: heavy alcohol combined with heavy smoking produced roughly 35–39× the risk of neither. This tool's multiplicative model reproduces those figures within roughly 1–7%.</p>
+      <p><strong>For vaping combined with alcohol, no equivalent study exists.</strong> This tool extends the same multiplicative mechanism to vaping as a projection, labeled as such wherever it appears.</p>
+
+      <h5>Cancer types modeled, and which factor drives each one</h5>
+      <table class="datatable">
+        <thead><tr><th>Cancer type</th><th>Smoking ceiling</th><th>Alcohol ceiling (6 drinks/day)</th><th>Notes</th></tr></thead>
+        <tbody id="cancerSourceTable"></tbody>
+      </table>
+      <p class="src">"Smoking ceiling" is the relative risk approached at high cumulative pack-years for combustible cigarettes. For larynx, pharynx, oral cavity, and esophagus, the ceiling is scaled up from Gandini et al.'s pooled "current smoker" average by ~2.8×, the ratio separating lung cancer's population-average smoker risk from its long-term-heavy-smoker risk. That's what allows the multiplicative combination to match the JKMS heavy+heavy figures above.</p>
+
+      <h5>Product multipliers</h5>
+      <table class="datatable">
+        <thead><tr><th>Product</th><th>Cancer multiplier</th><th>Cardiovascular model</th></tr></thead>
+        <tbody>
+          <tr><td>Regular / light / menthol cigarettes</td><td class="num">1.0×</td><td>Standard cigarette dose-response curve</td></tr>
+          <tr><td>IQOS / heated tobacco</td><td class="num">0.85×</td><td>Standard cigarette curve, scaled 0.85× (FDA: exposure-reduction claim allowed, disease-risk claim barred)</td></tr>
+          <tr><td>Vaping (e-cigarettes)</td><td class="num">~0.10× (projected)</td><td>Dedicated curve calibrated to PATH study odds ratios</td></tr>
+        </tbody>
+      </table>
+
+      <h5>Why heart disease and stroke don't include an alcohol effect</h5>
+      <p>Alcohol's relationship to cardiovascular disease is genuinely contested science: some studies suggest lower risk at moderate intake, and more recent reviews dispute this. Rather than take a side, this tool models heart disease and stroke from tobacco/vaping only.</p>
+
+      <h5>Important limitations</h5>
+      <ul>
+        <li>No study has tracked people who use these substances heavily for part of the year and stop, year after year. This tool approximates that as an averaged dose spread across the year, which is more likely to <em>understate</em> than overstate real risk.</li>
+        <li>EVALI is a real, serious, well-documented acute risk but isn't a graded dose-response relationship, so it's presented separately.</li>
+        <li>This is an educational model built from population averages, not a diagnostic or personalized medical risk assessment.</li>
+      </ul>
+
+      <h5>Sources referenced</h5>
+      <p class="src">National Academies of Sciences, Engineering, and Medicine, <em>Public Health Consequences of E-Cigarettes</em>, 2018 · Bhatta &amp; Glantz, <em>J Am Heart Assoc</em> 2019 · e-cigarette CVD network meta-analysis, 2025 · Plurphanswat, Selya &amp; Rodu, <em>Cureus</em> 2024 · CDC EVALI outbreak reports, 2019–2020 · NNAL biomarker studies, PATH / Cancer Epidemiology Biomarkers &amp; Prevention 2025 · Public Health England 2015 review &amp; <em>The Lancet</em>'s critique · Jun S et al., <em>J Korean Med Sci</em> 2024;39(22):e185 · Gandini S et al., <em>Int J Cancer</em> 2008 · Cumberbatch MG et al., <em>Eur Urol</em> 2016 · U.S. Surgeon General's Advisory, Alcohol and Cancer Risk, 2025 · National Cancer Institute Alcohol and Cancer Risk Fact Sheet · Bagnardi V et al., <em>Br J Cancer</em> 2015 · Peters SAE et al., <em>BMJ</em> 2018 · NCI Smoking and Tobacco Control Monograph 13 · FDA Modified Risk Tobacco Product orders for IQOS.</p>
+    </div>
+  </details>
+
+  <footer class="disclaimer">
+    <span>Educational model from population-level research (and, for vaping cancer risk, a labeled projection), not medical advice. <a href="privacy.html">Privacy &amp; cookies</a></span>
+    <span>Data current as of 2026.</span>
+  </footer>
+
+</div>
+
+<div class="mobilebar">
+  <button class="btn btn-secondary" id="btnCopyLinkMobile" type="button">🔗 Copy link</button>
+  <button class="btn btn-primary" id="btnShareMobile" type="button">↗ Share my number</button>
+</div>
+
+<script>
+(function(){
+  const cancerTypes = [
+    {key:'lung', label:'Lung', smoking:25, alcohol:null,
+      smokeSrc:'CDC / U.S. Surgeon General 2014, long-term heavy smoker figure', alcSrc:'No established link'},
+    {key:'larynx', label:'Larynx (voice box)', smoking:19.5, alcohol:{a:0.05625,b:2.415},
+      smokeSrc:'Gandini 2008 (6.98×) scaled ~2.8×; validated vs. JKMS 2024 (38.75× combined)', alcSrc:'NCI fact sheet: 0.9× light, 2.6× heavy drinkers'},
+    {key:'pharynx', label:'Pharynx (throat)', smoking:18.9, alcohol:{a:0.1,b:2.661},
+      smokeSrc:'Gandini 2008 (6.76×) scaled ~2.8×, by analogy with larynx/oral', alcSrc:'Modeled same as oral cavity (no separate pooled figure)'},
+    {key:'oral', label:'Oral cavity (mouth)', smoking:9.6, alcohol:{a:0.1,b:2.661},
+      smokeSrc:'Gandini 2008 (3.43×) scaled ~2.8×; validated vs. JKMS 2024 (36.42× combined)', alcSrc:'NCI fact sheet: 1.1× light, 5× heavy drinkers'},
+    {key:'esophagus', label:'Esophagus', smoking:10.0, alcohol:{a:0.3,b:1.868},
+      smokeSrc:'Gandini 2008 upper-digestive-tract figure (3.57×) scaled ~2.8×, by analogy', alcSrc:'NCI fact sheet: 1.3× light, 5× heavy drinkers'},
+    {key:'bladder', label:'Bladder', smoking:3.5, alcohol:null,
+      smokeSrc:'Cumberbatch et al. 2016, current smokers', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
+    {key:'liver', label:'Liver', smoking:1.9, alcohol:{a:0.05,b:2.161},
+      smokeSrc:'Lee et al. 2009, heavy smokers (already heavy-smoker-specific)', alcSrc:'NCI fact sheet: 2× as likely in heavy drinkers'},
+    {key:'pancreas', label:'Pancreas', smoking:1.74, alcohol:null,
+      smokeSrc:'Iodice / Gandini 2008, current smokers', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
+    {key:'stomach', label:'Stomach', smoking:1.53, alcohol:null,
+      smokeSrc:'Gastric Cancer journal meta-analysis, 2023', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
+    {key:'cervical', label:'Cervical (women)', smoking:1.83, alcohol:null,
+      smokeSrc:'Gandini et al. 2008, current smokers', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
+    {key:'colorectal', label:'Colorectal', smoking:1.3, alcohol:{a:0.05,b:1.661},
+      smokeSrc:'Pooled cohort meta-analyses, current smokers', alcSrc:'NCI fact sheet: 1.2–1.5× in moderate-heavy drinkers'},
+    {key:'kidney', label:'Kidney (renal)', smoking:1.4, alcohol:null,
+      smokeSrc:'Cumberbatch et al. 2016, current smokers', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
+    {key:'aml', label:'Acute myeloid leukemia', smoking:1.4, alcohol:null,
+      smokeSrc:'Meta-analysis of 23 studies, Am J Hematol 2014', alcSrc:'Not among the 7 alcohol-caused cancer sites'},
+    {key:'breast', label:'Breast (women)', smoking:null, alcohol:{a:0.04,b:1.953},
+      smokeSrc:'Not among the classic 12–13 smoking-caused cancer sites', alcSrc:'NCI fact sheet: 1.04× light, 1.6× heavy drinkers'}
+  ];
+  const cvdTypes = [ {key:'heart', label:'Heart disease'}, {key:'stroke', label:'Stroke'} ];
+
+  const productData = {
+    regular: {label:"Regular cigarettes", cancerMult:1.0, cvdType:'cigarette', cvdMult:1.0,
+      note:"Baseline case: the underlying studies were conducted mostly on standard filtered cigarettes.",
+      cigsLabel:"Cigarettes per day", lifetimeLabel:"Lifetime cigarettes"},
+    light: {label:"Light / mild cigarettes", cancerMult:1.0, cvdType:'cigarette', cvdMult:1.0,
+      note:"Modeled same as regular: smokers compensate for lower machine-measured yields by inhaling more deeply, so real-world risk isn't reduced.",
+      cigsLabel:"Cigarettes per day", lifetimeLabel:"Lifetime cigarettes"},
+    menthol: {label:"Menthol cigarettes", cancerMult:1.0, cvdType:'cigarette', cvdMult:1.0,
+      note:"Modeled same as regular: no strong evidence of a different per-cigarette cancer/heart risk.",
+      cigsLabel:"Cigarettes per day", lifetimeLabel:"Lifetime cigarettes"},
+    vape: {label:"Vaping (e-cigarettes)", cancerMult:0.10, cvdType:'vape', cvdMult:null,
+      note:"Cancer multiplier is a projection from carcinogen-biomarker studies (~85–98% lower NNAL than smokers), not validated incidence data. Cardiovascular curve is calibrated directly to PATH study odds ratios.",
+      cigsLabel:"Cig-equivalent vape sessions/day", lifetimeLabel:"Lifetime vape sessions"},
+    iqos: {label:"IQOS / heated tobacco", cancerMult:0.85, cvdType:'cigarette', cvdMult:0.85,
+      note:"FDA allows an exposure-reduction claim but bars a disease-risk-reduction claim, so this is modeled only modestly lower than regular cigarettes.",
+      cigsLabel:"Cig-equivalent HeatSticks/day", lifetimeLabel:"Lifetime HeatSticks"}
+  };
+
+  const PRESETS = {
+    never:   {cigs:0,  months:1,  drinks:0, alcMonths:1},
+    social:  {cigs:3,  months:3,  drinks:2, alcMonths:6},
+    regular: {cigs:10, months:6,  drinks:2, alcMonths:12},
+    heavy:   {cigs:20, months:12, drinks:5, alcMonths:12}
+  };
+
+  const els = {
+    productType: document.getElementById('productType'),
+    productNote: document.getElementById('productNote'),
+    cigsLabel: document.getElementById('cigsLabel'),
+    cigs: document.getElementById('cigs'),
+    cigsVal: document.getElementById('cigsVal'),
+    months: document.getElementById('months'),
+    monthsVal: document.getElementById('monthsVal'),
+    drinks: document.getElementById('drinks'),
+    drinksVal: document.getElementById('drinksVal'),
+    alcMonths: document.getElementById('alcMonths'),
+    alcMonthsVal: document.getElementById('alcMonthsVal'),
+    years: document.getElementById('years'),
+    yearsVal: document.getElementById('yearsVal'),
+    lifetimeCigsLabel: document.getElementById('lifetimeCigsLabel'),
+    lifetimeCigs: document.getElementById('lifetimeCigs'),
+    lifetimeDrinks: document.getElementById('lifetimeDrinks'),
+    viewToggle: document.getElementById('viewToggle'),
+    focusCondition: document.getElementById('focusCondition'),
+    heroDot: document.getElementById('heroDot'),
+    heroLabel: document.getElementById('heroLabel'),
+    heroBig: document.getElementById('heroBig'),
+    heroSub: document.getElementById('heroSub'),
+    cmpYou: document.getElementById('cmpYou'),
+    cmpFull: document.getElementById('cmpFull'),
+    barTitle: document.getElementById('barTitle'),
+    barchart: document.getElementById('barchart'),
+    chart: document.getElementById('chart'),
+    cancerSourceTable: document.getElementById('cancerSourceTable'),
+    synergyTitle: document.getElementById('synergyTitle'),
+    synergySub: document.getElementById('synergySub'),
+    synergyBody: document.getElementById('synergyBody'),
+    vapeNote: document.getElementById('vapeNote'),
+    presets: document.getElementById('presets'),
+    themeToggle: document.getElementById('themeToggle'),
+    shareToast: document.getElementById('shareToast')
+  };
+
+  let currentView = 'cancer';
+
+  // ---- risk model (unchanged from validated version) ----
+  function cancerCeilingRR(ceiling, packYears){
+    if(!ceiling || packYears<=0) return 1;
+    return 1 + (ceiling-1) * (1 - Math.exp(-packYears/25));
+  }
+  function alcoholCancerRR(params, dose){
+    if(!params || dose<=0) return 1;
+    const d = Math.min(dose, 6);
+    return 1 + params.a * Math.pow(d, params.b);
+  }
+  function chdRR(dose){ if(dose<=0) return 1; return 1 + 2.11 * Math.pow(dose/20, 0.261); }
+  function strokeRR(dose){ if(dose<=0) return 1; return 1 + 0.99 * Math.pow(dose/20, 0.319); }
+  function vapeFreqBase(months){ return 1.25 * Math.pow(months/12, 0.3365); }
+  function vapeAmountFactor(cigsEquiv){ return Math.pow(Math.max(cigsEquiv,0.01)/10, 0.15); }
+  function vapeHeartRR(months, cigsEquiv){
+    if(months<=0 || cigsEquiv<=0) return 1;
+    return 1 + vapeFreqBase(months) * vapeAmountFactor(cigsEquiv);
+  }
+  function vapeStrokeRR(months, cigsEquiv){
+    if(months<=0 || cigsEquiv<=0) return 1;
+    return 1 + 0.5 * (vapeFreqBase(months) * vapeAmountFactor(cigsEquiv));
+  }
+
+  function allConditions(){
+    return cancerTypes.map(c=>({key:c.key,label:c.label,kind:'cancer',smoking:c.smoking,alcohol:c.alcohol}))
+      .concat(cvdTypes.map(c=>({key:c.key,label:c.label,kind:c.key})));
+  }
+  function visibleConditions(){
+    const all = allConditions();
+    return currentView==='cancer' ? all.filter(c=>c.kind==='cancer') : all;
+  }
+  function smokingComponent(cond, cigs, months, years, product){
+    if(cond.kind==='heart' || cond.kind==='stroke' || !cond.smoking) return 1;
+    const dose = cigs * (months/12) * product.cancerMult;
+    const py = (dose/20) * years;
+    return cancerCeilingRR(cond.smoking, py);
+  }
+  function alcoholComponent(cond, drinks, alcMonths){
+    if(cond.kind==='heart' || cond.kind==='stroke' || !cond.alcohol) return 1;
+    const dose = drinks * (alcMonths/12);
+    return alcoholCancerRR(cond.alcohol, dose);
+  }
+  function cvdComponent(cond, cigs, months, product){
+    if(cond.kind!=='heart' && cond.kind!=='stroke') return 1;
+    if(product.cvdType==='vape'){
+      return cond.kind==='heart' ? vapeHeartRR(months, cigs) : vapeStrokeRR(months, cigs);
+    }
+    const dose = cigs * (months/12) * product.cvdMult;
+    return cond.kind==='heart' ? chdRR(dose) : strokeRR(dose);
+  }
+  function combinedRR(cond, cigs, months, drinks, alcMonths, years, product){
+    if(cond.kind==='heart' || cond.kind==='stroke') return cvdComponent(cond, cigs, months, product);
+    return smokingComponent(cond, cigs, months, years, product) * alcoholComponent(cond, drinks, alcMonths);
+  }
+  function fmt(x){ return x.toFixed(1) + '×'; }
+  function colorFor(cond){
+    const root = getComputedStyle(document.documentElement);
+    if(cond.kind==='heart') return root.getPropertyValue('--heart').trim();
+    if(cond.kind==='stroke') return root.getPropertyValue('--stroke-c').trim();
+    return root.getPropertyValue('--lung').trim();
+  }
+
+  function populateFocusSelect(){
+    const prev = els.focusCondition.value;
+    els.focusCondition.innerHTML = '';
+    visibleConditions().forEach(c=>{
+      const opt = document.createElement('option');
+      opt.value = c.key; opt.textContent = c.label;
+      els.focusCondition.appendChild(opt);
+    });
+    if(prev && visibleConditions().some(c=>c.key===prev)){ els.focusCondition.value = prev; }
+    else { els.focusCondition.value = 'lung'; }
+  }
+  function populateSourceTable(){
+    els.cancerSourceTable.innerHTML = cancerTypes.map(c=>{
+      const smokeStr = c.smoking ? c.smoking.toFixed(2)+'×' : 'N/A';
+      const alcStr = c.alcohol ? alcoholCancerRR(c.alcohol,6).toFixed(2)+'×' : 'N/A';
+      return `<tr><td>${c.label}</td><td class="num">${smokeStr}</td><td class="num">${alcStr}</td><td>${c.alcohol ? c.alcSrc : c.smokeSrc}</td></tr>`;
+    }).join('');
+  }
+
+  function drawBarChart(cigs, months, drinks, alcMonths, years, product){
+    const svg = els.barchart;
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    const conds = visibleConditions();
+    const rows = conds.map(c=>({
+      label:c.label, value: combinedRR(c, cigs, months, drinks, alcMonths, years, product), color: colorFor(c)
+    })).sort((a,b)=>b.value-a.value);
+    const rowH=26, gap=6, padL=155, padR=60, padT=10, padB=10, W=720;
+    const H = rows.length*(rowH+gap) + padT + padB;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const maxVal = Math.max(3, ...rows.map(r=>r.value));
+    const barAreaW = W - padL - padR;
+    function xw(v){ return (v/maxVal) * barAreaW; }
+    const ns = 'http://www.w3.org/2000/svg';
+    const trackColor = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    const textColor = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim();
+    rows.forEach((r,i)=>{
+      const y = padT + i*(rowH+gap);
+      const label = document.createElementNS(ns,'text');
+      label.setAttribute('x', padL-10); label.setAttribute('y', y+rowH*0.65);
+      label.setAttribute('text-anchor','end'); label.setAttribute('font-size','12');
+      label.setAttribute('fill',textColor); label.setAttribute('font-family',"Inter, sans-serif");
+      label.textContent = r.label;
+      svg.appendChild(label);
+      const track = document.createElementNS(ns,'rect');
+      track.setAttribute('x',padL); track.setAttribute('y',y);
+      track.setAttribute('width',barAreaW); track.setAttribute('height',rowH);
+      track.setAttribute('fill',trackColor); track.setAttribute('rx','5');
+      svg.appendChild(track);
+      const bar = document.createElementNS(ns,'rect');
+      bar.setAttribute('x',padL); bar.setAttribute('y',y);
+      bar.setAttribute('width', Math.max(2,xw(r.value))); bar.setAttribute('height',rowH);
+      bar.setAttribute('fill', r.color || '#3B6E8F'); bar.setAttribute('rx','5'); bar.setAttribute('opacity','0.92');
+      svg.appendChild(bar);
+      const val = document.createElementNS(ns,'text');
+      val.setAttribute('x', padL + xw(r.value) + 8); val.setAttribute('y', y+rowH*0.65);
+      val.setAttribute('font-size','12.5'); val.setAttribute('fill',textColor);
+      val.setAttribute('font-family',"JetBrains Mono, monospace"); val.setAttribute('font-weight','700');
+      val.textContent = fmt(r.value);
+      svg.appendChild(val);
+    });
+  }
+
+  function drawLineChart(cigs, months, drinks, alcMonths, years, product, focusCond){
+    const svg = els.chart;
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    const W=720,H=300, padL=46, padR=18, padT=16, padB=34;
+    const xDomainMax = Math.max(years, 15);
+    const yourSeries = [], fullSeries = [];
+    const steps = 40;
+    let yMax = 3;
+    for(let i=0;i<=steps;i++){
+      const t = xDomainMax * i/steps;
+      const rrYour = combinedRR(focusCond, cigs, months, drinks, alcMonths, t, product);
+      const rrFull = combinedRR(focusCond, cigs, 12, drinks, 12, t, product);
+      yourSeries.push([t, rrYour]); fullSeries.push([t, rrFull]);
+      yMax = Math.max(yMax, rrYour, rrFull);
+    }
+    yMax = Math.ceil(yMax*1.12);
+    function xPix(t){ return padL + (t/xDomainMax) * (W-padL-padR); }
+    function yPix(v){ return (H-padB) - (v/yMax) * (H-padB-padT); }
+    const ns = 'http://www.w3.org/2000/svg';
+    const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--border').trim();
+    const faintColor = getComputedStyle(document.documentElement).getPropertyValue('--faint').trim();
+    const lineColor = getComputedStyle(document.documentElement).getPropertyValue('--lung-line').trim();
+    for(let g=0; g<=5; g++){
+      const v = yMax * g/5; const y = yPix(v);
+      const line = document.createElementNS(ns,'line');
+      line.setAttribute('x1',padL); line.setAttribute('x2',W-padR); line.setAttribute('y1',y); line.setAttribute('y2',y);
+      line.setAttribute('stroke',gridColor); line.setAttribute('stroke-width','1');
+      svg.appendChild(line);
+      const label = document.createElementNS(ns,'text');
+      label.setAttribute('x', padL-8); label.setAttribute('y', y+4); label.setAttribute('text-anchor','end');
+      label.setAttribute('font-size','11'); label.setAttribute('fill',faintColor); label.setAttribute('font-family','JetBrains Mono, monospace');
+      label.textContent = v.toFixed(0)+'×';
+      svg.appendChild(label);
+    }
+    const xTickCount = Math.min(6, xDomainMax);
+    for(let i=0;i<=xTickCount;i++){
+      const t = Math.round(xDomainMax * i/xTickCount); const x = xPix(t);
+      const label = document.createElementNS(ns,'text');
+      label.setAttribute('x', x); label.setAttribute('y', H-10); label.setAttribute('text-anchor','middle');
+      label.setAttribute('font-size','11'); label.setAttribute('fill',faintColor); label.setAttribute('font-family','JetBrains Mono, monospace');
+      label.textContent = t+'y';
+      svg.appendChild(label);
+    }
+    function pathFor(series){ return series.map((p,i)=> (i===0?'M':'L') + xPix(p[0]).toFixed(1) + ',' + yPix(p[1]).toFixed(1)).join(' '); }
+    const areaPath = pathFor(fullSeries) + ' ' + yourSeries.slice().reverse().map(p=>'L'+xPix(p[0]).toFixed(1)+','+yPix(p[1]).toFixed(1)).join(' ') + ' Z';
+    const area = document.createElementNS(ns,'path');
+    area.setAttribute('d', areaPath); area.setAttribute('fill', lineColor); area.setAttribute('opacity','0.10');
+    svg.appendChild(area);
+    const fullPath = document.createElementNS(ns,'path');
+    fullPath.setAttribute('d', pathFor(fullSeries)); fullPath.setAttribute('fill','none'); fullPath.setAttribute('stroke',lineColor);
+    fullPath.setAttribute('stroke-width','2'); fullPath.setAttribute('stroke-dasharray','5,5'); fullPath.setAttribute('opacity','0.55');
+    svg.appendChild(fullPath);
+    const yourPath = document.createElementNS(ns,'path');
+    yourPath.setAttribute('d', pathFor(yourSeries)); yourPath.setAttribute('fill','none'); yourPath.setAttribute('stroke',lineColor); yourPath.setAttribute('stroke-width','3');
+    svg.appendChild(yourPath);
+    const curX = xPix(years);
+    const curY = yPix(combinedRR(focusCond, cigs, months, drinks, alcMonths, years, product));
+    const dot = document.createElementNS(ns,'circle');
+    dot.setAttribute('cx',curX); dot.setAttribute('cy',curY); dot.setAttribute('r','5');
+    dot.setAttribute('fill',lineColor); dot.setAttribute('stroke',getComputedStyle(document.documentElement).getPropertyValue('--surface').trim()); dot.setAttribute('stroke-width','2');
+    svg.appendChild(dot);
+  }
+
+  function renderSynergy(cond, cigs, months, drinks, alcMonths, years, product){
+    const isVape = product.cvdType==='vape';
+    const substanceLabel = isVape ? 'Vaping' : 'Smoking';
+    els.synergyTitle.textContent = substanceLabel + ' + alcohol: ' + cond.label;
+    if(cond.kind==='heart' || cond.kind==='stroke'){
+      els.synergySub.textContent = '';
+      els.synergyBody.innerHTML = `<p class="synergy-single">Alcohol's link to cardiovascular disease is contested science. This tool models ${cond.label.toLowerCase()} from tobacco/vaping only, so no synergy calc applies here.</p>`;
+      return;
+    }
+    const smoke = smokingComponent(cond, cigs, months, years, product);
+    const alc = alcoholComponent(cond, drinks, alcMonths);
+    if(!cond.smoking){
+      els.synergySub.textContent = '';
+      els.synergyBody.innerHTML = `<p class="synergy-single">${cond.label} is linked to alcohol, not smoking or vaping, in the reviews used here. Risk shown reflects alcohol only.</p>`;
+      return;
+    }
+    if(!cond.alcohol){
+      els.synergySub.textContent = '';
+      els.synergyBody.innerHTML = `<p class="synergy-single">${cond.label} is linked to smoking, not alcohol, among the cancers with convincing evidence reviewed here. Risk shown reflects tobacco/vaping only.</p>`;
+      return;
+    }
+    els.synergySub.textContent = 'How your combined risk compares to simply adding the two separate risks together.';
+    const additive = 1 + (smoke-1) + (alc-1);
+    const actual = smoke * alc;
+    const bonus = actual - additive;
+    const projectionNote = isVape
+      ? `<div class="synergy-note projection"><strong>Projected, not validated:</strong> no study has measured vaping + alcohol combined cancer risk directly. This extends the same mechanism validated for cigarettes + alcohol. Treat this as a reasoned projection.</div>`
+      : `<div class="synergy-note"><strong>+${bonus.toFixed(1)}×</strong> beyond what simple addition predicts. That's the synergy effect, and it closely matches directly measured studies.</div>`;
+    els.synergyBody.innerHTML = `
+      <div class="synergy-row">
+        <div class="synergy-stat"><h5>${substanceLabel}</h5><div class="v">${fmt(smoke)}</div></div>
+        <div class="synergy-stat"><h5>Alcohol</h5><div class="v">${fmt(alc)}</div></div>
+        <div class="synergy-stat"><h5>If added</h5><div class="v">${fmt(additive)}</div></div>
+        <div class="synergy-stat actual"><h5>Actual combined</h5><div class="v">${fmt(actual)}</div></div>
+      </div>
+      ${projectionNote}
+    `;
+  }
+
+  function updateProductUI(product){
+    els.productNote.textContent = product.note;
+    els.cigsLabel.textContent = product.cigsLabel;
+    els.lifetimeCigsLabel.textContent = product.lifetimeLabel;
+    els.cigs.classList.toggle('vape-active', product.cvdType==='vape');
+    els.vapeNote.classList.toggle('show', els.productType.value==='vape');
+  }
+
+  function currentInputs(){
+    return {
+      cigs: parseInt(els.cigs.value,10),
+      months: parseInt(els.months.value,10),
+      drinks: parseInt(els.drinks.value,10),
+      alcMonths: parseInt(els.alcMonths.value,10),
+      years: parseInt(els.years.value,10),
+      product: productData[els.productType.value]
+    };
+  }
+
+  function updateURL(){
+    try{
+      const p = new URLSearchParams();
+      p.set('c', els.cigs.value); p.set('m', els.months.value);
+      p.set('d', els.drinks.value); p.set('am', els.alcMonths.value);
+      p.set('y', els.years.value); p.set('p', els.productType.value);
+      p.set('f', els.focusCondition.value); p.set('v', currentView);
+      history.replaceState(null, '', '?' + p.toString());
+    }catch(e){}
+  }
+
+  function update(){
+    const {cigs, months, drinks, alcMonths, years, product} = currentInputs();
+    els.cigsVal.textContent = cigs;
+    els.monthsVal.textContent = months;
+    els.drinksVal.textContent = drinks;
+    els.alcMonthsVal.textContent = alcMonths;
+    els.yearsVal.textContent = years;
+    updateProductUI(product);
+
+    els.barTitle.textContent = currentView==='cancer'
+      ? 'Combined risk by cancer type' : 'Combined risk: cancer, heart disease & stroke';
+
+    const focusKey = els.focusCondition.value;
+    const focusCond = allConditions().find(c=>c.key===focusKey) || allConditions().find(c=>c.key==='lung');
+
+    const you = combinedRR(focusCond, cigs, months, drinks, alcMonths, years, product);
+    const full = combinedRR(focusCond, cigs, 12, drinks, 12, years, product);
+
+    els.heroDot.style.background = colorFor(focusCond);
+    els.heroLabel.textContent = focusCond.label;
+    els.heroBig.textContent = fmt(you);
+    els.heroSub.textContent = (focusCond.kind==='cancer')
+      ? 'risk vs. someone who does neither' : 'risk from your tobacco/vaping pattern (alcohol not modeled here)';
+    els.cmpYou.textContent = fmt(you);
+    els.cmpFull.textContent = fmt(full);
+
+    els.lifetimeCigs.textContent = Math.round(cigs * 30.4 * months * years).toLocaleString();
+    els.lifetimeDrinks.textContent = Math.round(drinks * 30.4 * alcMonths * years).toLocaleString();
+
+    renderSynergy(focusCond, cigs, months, drinks, alcMonths, years, product);
+    drawBarChart(cigs, months, drinks, alcMonths, years, product);
+    drawLineChart(cigs, months, drinks, alcMonths, years, product, focusCond);
+    updateURL();
+  }
+
+  // ---- presets ----
+  function setPreset(name){
+    const p = PRESETS[name]; if(!p) return;
+    els.cigs.value = p.cigs; els.months.value = p.months;
+    els.drinks.value = p.drinks; els.alcMonths.value = p.alcMonths;
+    [...els.presets.querySelectorAll('.preset-chip')].forEach(b=>{
+      b.classList.toggle('active', b.getAttribute('data-preset')===name);
+    });
+    update();
+  }
+  els.presets.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.preset-chip'); if(!btn) return;
+    setPreset(btn.getAttribute('data-preset'));
+  });
+  function clearPresetActive(){
+    [...els.presets.querySelectorAll('.preset-chip')].forEach(b=>b.classList.remove('active'));
+  }
+
+  // ---- theme toggle ----
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    els.themeToggle.textContent = t==='dark' ? '☀' : '◐';
+    try{ localStorage.setItem('kyn-theme', t); }catch(e){}
+    update(); // redraw charts with new CSS var colors
+  }
+  els.themeToggle.addEventListener('click', ()=>{
+    const cur = document.documentElement.getAttribute('data-theme');
+    applyTheme(cur==='dark' ? 'light' : 'dark');
+  });
+
+  // ---- view toggle / inputs ----
+  els.viewToggle.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-view]');
+    if(!btn) return;
+    currentView = btn.getAttribute('data-view');
+    [...els.viewToggle.querySelectorAll('button')].forEach(b=>{
+      b.classList.toggle('active', b===btn);
+      b.setAttribute('aria-selected', b===btn ? 'true':'false');
+    });
+    populateFocusSelect();
+    update();
+  });
+  ['input','change'].forEach(evt=>{
+    [els.cigs, els.months, els.drinks, els.alcMonths, els.years].forEach(el=>{
+      el.addEventListener(evt, ()=>{ clearPresetActive(); update(); });
+    });
+    els.productType.addEventListener(evt, update);
+    els.focusCondition.addEventListener(evt, update);
+  });
+
+  // ---- share card ----
+  function loadFonts(){
+    try{
+      return Promise.all([
+        document.fonts.load('700 64px "Space Grotesk"'),
+        document.fonts.load('600 28px "Space Grotesk"'),
+        document.fonts.load('500 24px "Inter"'),
+        document.fonts.load('700 22px "JetBrains Mono"')
+      ]);
+    }catch(e){ return Promise.resolve(); }
+  }
+  function drawShareCard(){
+    const canvas = document.getElementById('shareCanvas');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const dark = document.documentElement.getAttribute('data-theme')==='dark';
+    const bg = dark ? '#0E1418' : '#12181D';
+    const accent = '#52B8A0';
+    const ink = '#EAF1F2';
+    const muted = '#93A3AA';
+
+    ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+    // subtle accent bar
+    ctx.fillStyle = accent; ctx.fillRect(0,0,W,14);
+
+    const focusKey = els.focusCondition.value;
+    const focusCond = allConditions().find(c=>c.key===focusKey) || allConditions().find(c=>c.key==='lung');
+    const {cigs, months, drinks, alcMonths, years, product} = currentInputs();
+    const you = combinedRR(focusCond, cigs, months, drinks, alcMonths, years, product);
+
+    ctx.fillStyle = accent;
+    ctx.font = '700 30px "JetBrains Mono", monospace';
+    ctx.fillText('KNOW YOUR NUMBER', 70, 130);
+
+    ctx.fillStyle = muted;
+    ctx.font = '500 30px "Inter", sans-serif';
+    ctx.fillText(focusCond.label.toUpperCase(), 70, 190);
+
+    ctx.fillStyle = ink;
+    ctx.font = '700 220px "Space Grotesk", sans-serif';
+    ctx.fillText(fmt(you), 62, 480);
+
+    ctx.fillStyle = muted;
+    ctx.font = '500 32px "Inter", sans-serif';
+    wrapText(ctx, 'relative risk vs. someone who does neither', 70, 560, W-140, 40);
+
+    // divider
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.beginPath(); ctx.moveTo(70,650); ctx.lineTo(W-70,650); ctx.stroke();
+
+    // mini stats row
+    const stats = [
+      ['YOU', fmt(you)],
+      ['YEAR-ROUND', fmt(combinedRR(focusCond, cigs, 12, drinks, 12, years, product))],
+      ['NEITHER', '1.0×']
+    ];
+    const colW = (W-140)/3;
+    stats.forEach((s,i)=>{
+      const x = 70 + i*colW;
+      ctx.fillStyle = muted; ctx.font = '700 22px "JetBrains Mono", monospace';
+      ctx.fillText(s[0], x, 710);
+      ctx.fillStyle = ink; ctx.font = '700 52px "Space Grotesk", sans-serif';
+      ctx.fillText(s[1], x, 770);
+    });
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.beginPath(); ctx.moveTo(70,830); ctx.lineTo(W-70,830); ctx.stroke();
+
+    ctx.fillStyle = muted; ctx.font = '500 26px "Inter", sans-serif';
+    wrapText(ctx, 'Real math on smoking, vaping, and drinking. Not scare tactics, not a lecture.', 70, 890, W-140, 36);
+
+    ctx.fillStyle = accent; ctx.font = '700 34px "Space Grotesk", sans-serif';
+    ctx.fillText('→ see your number', 70, H-90);
+
+    ctx.fillStyle = muted; ctx.font = '400 22px "Inter", sans-serif';
+    ctx.fillText('Educational model, not medical advice.', 70, H-40);
+
+    return canvas;
+  }
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight){
+    const words = text.split(' ');
+    let line = '', yy = y;
+    for(let n=0;n<words.length;n++){
+      const test = line + words[n] + ' ';
+      if(ctx.measureText(test).width > maxWidth && n>0){
+        ctx.fillText(line, x, yy);
+        line = words[n] + ' '; yy += lineHeight;
+      } else { line = test; }
+    }
+    ctx.fillText(line, x, yy);
+  }
+
+  function toast(msg){
+    els.shareToast.textContent = msg;
+    setTimeout(()=>{ if(els.shareToast.textContent===msg) els.shareToast.textContent=''; }, 3500);
+  }
+
+  async function getShareBlob(){
+    await loadFonts();
+    const canvas = drawShareCard();
+    return new Promise(resolve=> canvas.toBlob(resolve, 'image/png'));
+  }
+
+  document.getElementById('btnDownload').addEventListener('click', async ()=>{
+    const blob = await getShareBlob();
+    if(!blob){ toast('Could not generate image.'); return; }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'know-your-number.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 4000);
+    toast('Downloaded ✓');
+  });
+
+  async function doShare(){
+    const url = location.href;
+    const text = 'Check out my number:';
+    try{
+      const blob = await getShareBlob();
+      const file = blob ? new File([blob], 'know-your-number.png', {type:'image/png'}) : null;
+      if(file && navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({files:[file], title:'Know Your Number', text});
+        return;
+      }
+      if(navigator.share){
+        await navigator.share({title:'Know Your Number', text, url});
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      toast('Link copied ✓ (native share not supported here)');
+    }catch(e){
+      if(e && e.name==='AbortError') return;
+      try{ await navigator.clipboard.writeText(url); toast('Link copied ✓'); }
+      catch(e2){ toast('Could not share. Copy the URL manually.'); }
+    }
+  }
+  document.getElementById('btnShare').addEventListener('click', doShare);
+  document.getElementById('btnShareMobile').addEventListener('click', doShare);
+
+  async function copyLink(){
+    try{ await navigator.clipboard.writeText(location.href); toast('Link copied ✓'); }
+    catch(e){ toast('Could not copy. Long-press the address bar instead.'); }
+  }
+  document.getElementById('btnCopyLink').addEventListener('click', copyLink);
+  document.getElementById('btnCopyLinkMobile').addEventListener('click', copyLink);
+
+  // ---- init: theme + URL state ----
+  (function init(){
+    let theme = 'dark';
+    try{
+      const saved = localStorage.getItem('kyn-theme');
+      if(saved){ theme = saved; }
+      else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches){ theme = 'light'; }
+    }catch(e){}
+    document.documentElement.setAttribute('data-theme', theme);
+    els.themeToggle.textContent = theme==='dark' ? '☀' : '◐';
+
+    try{
+      const p = new URLSearchParams(location.search);
+      if(p.has('c')) els.cigs.value = p.get('c');
+      if(p.has('m')) els.months.value = p.get('m');
+      if(p.has('d')) els.drinks.value = p.get('d');
+      if(p.has('am')) els.alcMonths.value = p.get('am');
+      if(p.has('y')) els.years.value = p.get('y');
+      if(p.has('p') && productData[p.get('p')]) els.productType.value = p.get('p');
+      if(p.has('v')){ currentView = p.get('v')==='all' ? 'all' : 'cancer'; }
+      if(p.has('c')||p.has('m')||p.has('d')) clearPresetActive();
+    }catch(e){}
+
+    [...els.viewToggle.querySelectorAll('button')].forEach(b=>{
+      const isActive = b.getAttribute('data-view')===currentView;
+      b.classList.toggle('active', isActive);
+      b.setAttribute('aria-selected', isActive?'true':'false');
+    });
+
+    populateFocusSelect();
+    try{
+      const p = new URLSearchParams(location.search);
+      if(p.has('f') && visibleConditions().some(c=>c.key===p.get('f'))){ els.focusCondition.value = p.get('f'); }
+    }catch(e){}
+    populateSourceTable();
+    update();
+  })();
+})();
+</script>
+</body>
+</html>

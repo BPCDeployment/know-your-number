@@ -1,0 +1,5 @@
+# Replace pub-XXXXXXXXXXXXXXXX below with your real AdSense publisher ID
+# (found in AdSense under Account > Settings > Account information).
+# This file MUST be placed at the root of your domain, e.g. https://yourdomain.com/ads.txt
+# (not in a subfolder), or AdSense will flag it as missing.
+google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
