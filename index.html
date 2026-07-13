@@ -515,6 +515,22 @@
   .glist li b{font-family:'JetBrains Mono',monospace;color:var(--accent);flex:0 0 auto;}
   .glist li.empty{color:var(--faint);justify-content:flex-start;border:none;}
 
+  /* ===== READ-UP (SEO links) ===== */
+  .readup{margin:8px 0;}
+  .readup h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(20px,4vw,26px);margin:0 0 14px;letter-spacing:-.01em;}
+  .readup-grid{display:grid;grid-template-columns:1fr;gap:10px;}
+  @media(min-width:700px){.readup-grid{grid-template-columns:1fr 1fr;}}
+  .readup-grid a{display:block;padding:14px 16px;border:1px solid var(--border);border-radius:14px;background:var(--surface);box-shadow:var(--card-shadow);text-decoration:none;transition:transform .16s,border-color .2s;}
+  .readup-grid a:hover{transform:translateY(-3px);border-color:var(--accent);}
+  .readup-grid b{display:block;color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:15px;margin-bottom:4px;}
+  .readup-grid span{display:block;color:var(--muted);font-size:13px;line-height:1.4;}
+
+  /* ===== SOCIAL PROOF PILL ===== */
+  .socialproof{align-items:center;gap:8px;margin-top:16px;font-size:13.5px;color:var(--muted);
+    background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 15px;}
+  .socialproof b{color:var(--accent);font-family:'JetBrains Mono',monospace;}
+  .socialproof .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(43,227,172,.2);animation:pulseDot 2.6s ease-in-out infinite;}
+
   /* ===== ANIMATIONS ===== */
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
   @keyframes pulseDot{0%,100%{box-shadow:0 0 0 3px rgba(43,212,168,.18);}50%{box-shadow:0 0 0 7px rgba(43,212,168,0);}}
@@ -529,6 +545,7 @@
     #scoreArc,.bar-anim,#chart .draw{transition:none !important;}
   }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Know Your Number","url":"https://knowyournumber.io/","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A free, evidence-based calculator that shows what smoking, vaping and drinking actually add up to, as a shareable 0 to 100 number."}</script>
 </head>
 <body>
 <div class="wrap">
@@ -544,6 +561,7 @@
     <div class="eyebrow"><b>Smoking · vaping · drinking</b> &nbsp;·&nbsp; the actual numbers</div>
     <h1 class="disp">Know your<br>number.</h1>
     <p class="subtitle">No scare tactics, no lecture. Move the sliders, get a straight-up score for what your habits actually add up to, then dare a mate to check theirs.</p>
+    <div class="socialproof" id="socialProof" style="display:none;"></div>
   </header>
 
   <div class="callout reveal">
@@ -947,6 +965,18 @@
       <p class="src"><strong>Quantitative anchors:</strong> Bagnardi V et al., <em>Br J Cancer</em> 2015 (alcohol dose-response) · Hashibe M et al. — INHANCE, <em>Cancer Epidemiol Biomarkers Prev</em> 2009 (smoking×alcohol synergy) · Wyss A et al. — INHANCE, <em>Am J Epidemiol</em> 2013 · Gandini S et al., <em>Int J Cancer</em> 2008 · Wang QL et al., <em>JNCI</em> 2017 · Freedman ND et al., <em>JAMA</em> 2011 · Bosetti C et al. — PanC4, <em>Ann Oncol</em> 2012 · Hackshaw A et al., <em>BMJ</em> 2018 (cigarette cardiovascular) · Renehan AG et al., <em>Lancet</em> 2008 (BMI) · Prospective Studies Collaboration — Lewington S et al., <em>Lancet</em> 2002/2007 (blood pressure, cholesterol) · D'Souza G et al., <em>NEJM</em> 2007 (HPV) · Marron M et al. — INHANCE, <em>Int J Epidemiol</em> 2010 (cessation) · e-cigarette cardiovascular meta-analyses, 2024–2025 · CDC EVALI reports, 2019–2020 · Jun S et al., <em>J Korean Med Sci</em> 2024 · FDA Modified Risk Tobacco Product orders for IQOS. Per-cancer sources are listed in the table above, each flagged strong / moderate / weak.</p>
     </div>
   </details>
+
+  <hr class="section-divider">
+  <section class="readup">
+    <h2 class="disp">Read up on the science</h2>
+    <div class="readup-grid">
+      <a href="/learn/one-cigarette-a-day"><b>Is one cigarette a day actually that bad?</b><span>Spoiler: about half the heart risk of a pack a day, not a twentieth.</span></a>
+      <a href="/learn/does-vaping-cause-cancer"><b>Does vaping cause cancer?</b><span>The honest answer, and why nobody actually knows yet.</span></a>
+      <a href="/learn/smoking-and-drinking"><b>Why smoking + drinking is worse than the sum</b><span>The two don't add up. They multiply, to about 35x.</span></a>
+      <a href="/learn/quitting-timeline"><b>What actually happens after you quit</b><span>From 20 minutes to 20 years, and what fully resets.</span></a>
+      <a href="/learn/is-any-drinking-safe"><b>Is there a safe amount of alcohol?</b><span>For cancer risk, the big reviews say no. Here's the nuance.</span></a>
+    </div>
+  </section>
 
   <footer class="disclaimer">
     <span>An educational <em>relative-risk</em> model built from published population studies (with vaping cancer risk a labeled projection). It isolates smoking, vaping and alcohol, so it is not your total risk, a prediction, or a diagnosis, and not a substitute for medical advice. <a href="privacy.html">Privacy &amp; cookies</a></span>
@@ -2080,6 +2110,9 @@
     el.innerHTML=arr.map(function(a){return '<li><span>'+esc(String(a[0]))+'</span><b>'+a[1]+'</b></li>';}).join('');}
   fetch('/api/public-stats').then(function(r){return r.json();}).then(function(d){
     var t=d.totals||{}, people=t.visits||0, countries=t.countries||0, runs=t.runs||0;
+    // social-proof pill up top (only once there's meaningful traction)
+    var sp=document.getElementById('socialProof');
+    if(sp && people>=25){ sp.innerHTML='<span class="dot"></span> Joined by <b>'+people.toLocaleString()+'</b> people'+(countries>1?(' across '+countries+' countries'):'')+'.'; sp.style.display='inline-flex'; }
     document.getElementById('gPeople').textContent=people.toLocaleString();
     document.getElementById('gCountries').textContent=countries.toLocaleString();
     document.getElementById('gRuns').textContent=runs.toLocaleString();
